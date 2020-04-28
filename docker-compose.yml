@@ -18,6 +18,13 @@ services:
       - postgres
     restart: always
 
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    networks:
+      - rdnet
+
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -34,6 +41,7 @@ services:
 
 networks:
   postgres:
+  rdnet:
 
 volumes:
   postgres:
