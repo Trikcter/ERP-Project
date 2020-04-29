@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "organization")
-data class Organization(
+class Organization(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Long,
@@ -21,23 +21,19 @@ data class Organization(
         @Column(name = "title", nullable = false)
         var title: String,
 
-        // TODO: Переделать сохранение изображения
-        /*@Column(name = "logo")
-        var logo: String? = null,*/
-
         @Column(name = "is_deleted", nullable = false)
-        var isDeleted: Boolean,
+        var isDeleted: Boolean
+) {
+    @OneToMany(fetch = FetchType.LAZY)
+    var staff: Collection<User>? = null
 
-        @OneToMany(fetch = FetchType.LAZY)
-        var staff: Collection<User>? = null,
+    @OneToMany(fetch = FetchType.LAZY)
+    var goods: Collection<Product>? = null
 
-        @OneToMany(fetch = FetchType.LAZY)
-        var goods: Collection<Product>? = null,
+    @OneToMany(fetch = FetchType.LAZY)
+    var warehouses: Collection<Warehouse>? = null
 
-        @OneToMany(fetch = FetchType.LAZY)
-        var warehouses: Collection<Warehouse>,
-
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "balance_id", referencedColumnName = "id")
-        var balance: Balance
-)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "balance_id", referencedColumnName = "id")
+    lateinit var balance: Balance
+}

@@ -25,17 +25,17 @@ data class User(
         var surname: String,
 
         @Column(name = "is_deleted")
-        var isDeleted: Boolean = false,
+        var isDeleted: Boolean = false
+) {
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+            inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
+    )
+    var roles: Collection<Role>? = null
 
-        @ManyToMany
-        @JoinTable(
-                name = "users_roles",
-                joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-                inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
-        )
-        var roles: Collection<Role>? = null,
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "organization_id")
-        var organization: Organization? = null
-)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id")
+    var organization: Organization? = null
+}

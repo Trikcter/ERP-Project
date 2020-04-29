@@ -12,14 +12,14 @@ data class WarehouseCondition(
         @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Long,
 
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")
-        var product: Product,
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "warehouse_id")
-        var warehouse: Warehouse,
-
         @Column(name = "count", nullable = false)
         var count: Long
-)
+) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")
+    lateinit var product: Product
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "warehouse_id")
+    lateinit var warehouse: Warehouse
+}
