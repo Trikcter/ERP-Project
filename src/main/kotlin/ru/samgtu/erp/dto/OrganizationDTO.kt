@@ -3,7 +3,7 @@ package ru.samgtu.erp.dto
 import javax.validation.constraints.NotNull
 
 data class OrganizationDTO(
-        var id: Long,
+        var id: Long?,
 
         @NotNull
         var inn: String,

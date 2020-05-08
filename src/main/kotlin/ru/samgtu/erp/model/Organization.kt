@@ -7,7 +7,7 @@ import javax.persistence.*
 class Organization(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        override var id: Long?,
 
         @Column(name = "inn", nullable = false)
         var inn: String,
@@ -22,8 +22,8 @@ class Organization(
         var title: String,
 
         @Column(name = "is_deleted", nullable = false)
-        var isDeleted: Boolean
-) {
+        override var isDeleted: Boolean
+) : AbstractEntity {
     @OneToMany(fetch = FetchType.LAZY)
     var staff: Collection<User>? = null
 
@@ -36,4 +36,8 @@ class Organization(
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "balance_id", referencedColumnName = "id")
     lateinit var balance: Balance
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    lateinit var owner: User
 }

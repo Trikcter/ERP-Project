@@ -33,6 +33,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.flywaydb:flyway-core:6.3.3")
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("org.springframework.security:spring-security-messaging")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")

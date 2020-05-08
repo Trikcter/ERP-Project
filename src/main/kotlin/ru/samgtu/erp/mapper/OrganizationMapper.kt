@@ -5,8 +5,8 @@ import ru.samgtu.erp.dto.OrganizationDTO
 import ru.samgtu.erp.model.Organization
 
 @Service
-class OrganizationMapper {
-    fun dto2model(dto: OrganizationDTO): Organization {
+class OrganizationMapper : CrudMapper<OrganizationDTO, Organization> {
+    override fun dto2model(dto: OrganizationDTO): Organization {
         return Organization(
                 dto.id,
                 dto.inn,
@@ -17,14 +17,14 @@ class OrganizationMapper {
         )
     }
 
-    fun model2dto(organization: Organization): OrganizationDTO {
+    override fun model2dto(model: Organization): OrganizationDTO {
         return OrganizationDTO(
-                organization.id,
-                organization.inn,
-                organization.kpp,
-                organization.ogrn,
-                organization.title,
-                organization.isDeleted
+                model.id,
+                model.inn,
+                model.kpp,
+                model.ogrn,
+                model.title,
+                model.isDeleted
         )
     }
 }

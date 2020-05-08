@@ -7,14 +7,14 @@ import javax.persistence.*
 data class Warehouse(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        override var id: Long?,
 
         @Column(name = "title", nullable = false)
         var title: String,
 
         @Column(name = "is_deleted", nullable = false)
-        var isDeleted: Boolean
-) {
+        override var isDeleted: Boolean
+) : AbstractEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", nullable = false, referencedColumnName = "id")
     lateinit var address: Address

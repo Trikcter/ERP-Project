@@ -17,7 +17,9 @@ class UserDetailsServiceImp : UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findByLogin(username).get()
 
-        val authorities: List<GrantedAuthority> = user.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }.collect(Collectors.toList<GrantedAuthority>())
+        val authorities: List<GrantedAuthority> = user.roles!!.stream()
+                .map { role -> SimpleGrantedAuthority(role.name) }
+                .collect(Collectors.toList<GrantedAuthority>())
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(username)

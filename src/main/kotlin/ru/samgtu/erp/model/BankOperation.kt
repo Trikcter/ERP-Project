@@ -8,7 +8,7 @@ import javax.persistence.*
 data class BankOperation(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        var id: Long?,
 
         @Column(name = "sum", nullable = false)
         var sum: BigDecimal,

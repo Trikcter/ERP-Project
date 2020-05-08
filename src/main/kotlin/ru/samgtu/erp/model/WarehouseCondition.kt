@@ -10,7 +10,7 @@ import javax.persistence.*
 data class WarehouseCondition(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        var id: Long?,
 
         @Column(name = "count", nullable = false)
         var count: Long

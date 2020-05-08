@@ -1,38 +1,40 @@
 package ru.samgtu.erp.service
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import ru.samgtu.erp.model.Organization
 import ru.samgtu.erp.repository.OrganizationRepository
 import javax.persistence.EntityNotFoundException
 
 @Service
-class OrganizationService {
+class OrganizationService : CrudService<Organization>() {
     @Autowired
     lateinit var organizationRepository: OrganizationRepository
 
-    fun save(organization: Organization): Organization {
-        return organizationRepository.save(organization)
-    }
+    @Autowired
+    lateinit var balanceService: BalanceService
 
-    fun delete(ids: List<Long>) {
-        val organizations = ids.map {
-            val organization = organizationRepository.findById(it).orElseThrow { throw EntityNotFoundException() }
-            organization.isDeleted = true
+    override fun save(entity: Organization): Organization {
+        val saved = organizationRepository.save(entity)
 
-            organization
+        return if (entity.id == null) {
+            val balance = balanceService.createBalance(saved)
+            saved.balance = balance
+
+            organizationRepository.save(saved)
+        } else {
+            saved
         }
-
-        organizationRepository.saveAll(organizations)
     }
 
-    fun getOrganization(id: Long): Organization {
-        return organizationRepository.findById(id).orElseThrow { throw EntityNotFoundException() }
+    fun getById(id: Long?): Organization {
+        val entityId = id ?: throw EntityNotFoundException()
+
+        return organizationRepository.findById(entityId).orElseThrow { throw EntityNotFoundException() }
     }
 
-    fun getAll(page: Pageable): Page<Organization> {
-        return organizationRepository.findAll(page)
+    override fun getRepository(): JpaRepository<Organization, Long> {
+        return organizationRepository
     }
 }

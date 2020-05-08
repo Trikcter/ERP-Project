@@ -7,7 +7,7 @@ import javax.persistence.*
 data class Order(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        var id: Long?,
 
         @Column(name = "count")
         var count: Long

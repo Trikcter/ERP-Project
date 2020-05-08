@@ -9,4 +9,6 @@ import java.util.*
 @Repository
 interface UserRepository : JpaRepository<User, Long> {
     fun findByLogin(@Param("login") username: String): Optional<User>
+
+    fun existsByLogin(@Param("login") username: String): Boolean
 }
