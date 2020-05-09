@@ -12,6 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.session.SessionManagementFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
 import ru.samgtu.erp.security.JwtAuthenticationEntryPoint
 import ru.samgtu.erp.security.JwtAuthenticationFilter
 import ru.samgtu.erp.security.UserDetailsServiceImp
@@ -39,8 +43,8 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
         authenticationManagerBuilder
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder())
+            .userDetailsService(userDetailsService)
+            .passwordEncoder(bCryptPasswordEncoder())
     }
 
     @Bean
@@ -49,20 +53,55 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         return super.authenticationManagerBean()
     }
 
+    @Bean
+    fun corsFilter(): CorsFilter {
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/api/**", this.getCorsConfiguration())
+
+        return CorsFilter(source)
+    }
+
+    private fun getCorsConfiguration(): CorsConfiguration {
+        val configuration = CorsConfiguration()
+
+        configuration.addAllowedOrigin("*")
+
+        configuration.addAllowedMethod("PUT")
+        configuration.addAllowedMethod("POST")
+        configuration.addAllowedMethod("GET")
+        configuration.addAllowedMethod("OPTIONS")
+        configuration.addAllowedMethod("DELETE")
+        configuration.addAllowedMethod("PATCH")
+
+        configuration.addAllowedHeader("Origin")
+        configuration.addAllowedHeader("X-Requested-With")
+        configuration.addAllowedHeader("Content-Type")
+        configuration.addAllowedHeader("Accept")
+        configuration.addAllowedHeader("Content-Disposition")
+        configuration.addAllowedHeader("token")
+
+        configuration.addExposedHeader("Content-Disposition")
+
+        configuration.allowCredentials = true
+
+        configuration.maxAge = 3600L
+
+        return configuration
+    }
+
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
-                .csrf()
-                .disable()
-                .authorizeRequests()
-                .antMatchers("/**", "/api/v1/auth/*").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .cors()
-                .disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .csrf()
+            .disable()
+            .authorizeRequests()
+            .antMatchers("/**", "/api/v1/auth/*").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
+        http.addFilterBefore(corsFilter(), SessionManagementFilter::class.java)
     }
 }
