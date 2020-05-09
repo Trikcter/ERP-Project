@@ -15,12 +15,16 @@ class OrganizationService : CrudService<Organization>() {
     @Autowired
     lateinit var balanceService: BalanceService
 
+    @Autowired
+    lateinit var userService: UserService
+
     override fun save(entity: Organization): Organization {
         val saved = organizationRepository.save(entity)
 
-        return if (entity.id == null) {
+        return if (entity.id == 0L) {
             val balance = balanceService.createBalance(saved)
             saved.balance = balance
+            saved.owner = userService.getCurrentUser()
 
             organizationRepository.save(saved)
         } else {

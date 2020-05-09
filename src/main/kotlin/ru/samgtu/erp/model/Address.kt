@@ -7,7 +7,7 @@ import javax.persistence.*
 data class Address(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        override var id: Long?,
+        override var id: Long = 0,
 
         @Column(name = "title", nullable = false)
         var title: String,

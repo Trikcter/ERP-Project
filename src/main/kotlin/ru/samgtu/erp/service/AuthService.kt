@@ -53,7 +53,7 @@ class AuthService {
             val authorities: List<GrantedAuthority> = user.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
                     .collect(Collectors.toList<GrantedAuthority>())
 
-            ResponseEntity.ok(JwtResponse(jwt, user.login, authorities))
+            ResponseEntity.ok(JwtResponse(jwt, user.login, user.organization?.title, authorities))
         } else {
             ResponseEntity("Такого пользователя нет",
                     HttpStatus.BAD_REQUEST)

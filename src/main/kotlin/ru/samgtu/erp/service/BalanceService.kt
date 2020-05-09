@@ -13,7 +13,7 @@ class BalanceService {
     lateinit var balanceRepository: BalanceRepository
 
     fun createBalance(organization: Organization): Balance {
-        val balance = Balance(null, BigDecimal.ZERO, organization)
+        val balance = Balance(0, BigDecimal.ZERO, organization)
         return balanceRepository.save(balance)
     }
 

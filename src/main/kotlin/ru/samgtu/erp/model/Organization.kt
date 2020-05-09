@@ -7,7 +7,7 @@ import javax.persistence.*
 class Organization(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        override var id: Long?,
+        override var id: Long = 0,
 
         @Column(name = "inn", nullable = false)
         var inn: String,

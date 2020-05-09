@@ -8,7 +8,7 @@ import javax.persistence.*
 data class Balance(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        var id: Long?,
+        var id: Long = 0,
 
         @Column(name = "all_balance", nullable = false)
         var allBalance: BigDecimal
@@ -23,7 +23,7 @@ data class Balance(
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     lateinit var organization: Organization
 
-    constructor(id: Long?, balance: BigDecimal, organization: Organization) : this(id, balance) {
+    constructor(id: Long, balance: BigDecimal, organization: Organization) : this(id, balance) {
         this.organization = organization
     }
 }
