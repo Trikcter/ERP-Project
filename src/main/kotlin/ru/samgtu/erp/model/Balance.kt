@@ -7,7 +7,7 @@ import javax.persistence.*
 @Table(name = "balance")
 data class Balance(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long = 0,
 
         @Column(name = "all_balance", nullable = false)

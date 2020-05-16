@@ -22,17 +22,16 @@ class JwtAuthenticationFilter : OncePerRequestFilter() {
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         try {
-
             val jwt = getJwt(request)
             if (jwt != null && tokenProvider!!.validateJwtToken(jwt)) {
                 val username = tokenProvider.getUserNameFromJwtToken(jwt)
 
                 val userDetails = userDetailsService!!.loadUserByUsername(username)
                 val authentication = UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities())
-                authentication.setDetails(WebAuthenticationDetailsSource().buildDetails(request))
+                        userDetails, null, userDetails.authorities)
+                authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
 
-                SecurityContextHolder.getContext().setAuthentication(authentication)
+                SecurityContextHolder.getContext().authentication = authentication
             }
         } catch (e: Exception) {
             logger.error("Can NOT set user authentication -> Message: {}", e)

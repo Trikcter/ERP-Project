@@ -3,6 +3,7 @@ package ru.samgtu.erp.service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import ru.samgtu.erp.model.Organization
 import ru.samgtu.erp.repository.OrganizationRepository
 import javax.persistence.EntityNotFoundException
@@ -18,8 +19,9 @@ class OrganizationService : CrudService<Organization>() {
     @Autowired
     lateinit var userService: UserService
 
+    @Transactional
     override fun save(entity: Organization): Organization {
-        val saved = organizationRepository.save(entity)
+        val saved = organizationRepository.save(entity.copy())
 
         return if (entity.id == 0L) {
             val balance = balanceService.createBalance(saved)

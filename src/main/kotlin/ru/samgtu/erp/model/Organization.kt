@@ -4,9 +4,9 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "organization")
-class Organization(
+data class Organization(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         override var id: Long = 0,
 
         @Column(name = "inn", nullable = false)

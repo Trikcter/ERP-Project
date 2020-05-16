@@ -77,13 +77,17 @@ class AuthService {
                     StringUtils.getNameFromFio(newUser.fio),
                     StringUtils.getSecondNameFromFio(newUser.fio),
                     StringUtils.getSurnameFromFio(newUser.fio),
-                    true
+                    false
             )
             user.roles = listOf(roleRepository.findByName("ADMIN"))
 
-            userRepository.save(user)
+            val savedUser = userRepository.save(user)
 
-            return ResponseEntity("Успешно", HttpStatus.OK)
+            val jwt: String = jwtProvider.generateJwtToken(savedUser.login)
+            val authorities: List<GrantedAuthority> = savedUser.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
+                    .collect(Collectors.toList<GrantedAuthority>())
+
+            return ResponseEntity.ok(JwtResponse(jwt, user.login, user.organization?.title, authorities))
         } else {
             return ResponseEntity("Такой пользовать уже существует",
                     HttpStatus.BAD_REQUEST)

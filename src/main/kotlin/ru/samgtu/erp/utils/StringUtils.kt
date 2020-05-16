@@ -3,7 +3,7 @@ package ru.samgtu.erp.utils
 class StringUtils {
     companion object {
         private fun getNameArray(fio: String): List<String> {
-            return fio.split("")
+            return fio.split(" ")
         }
 
         fun getNameFromFio(fio: String): String {

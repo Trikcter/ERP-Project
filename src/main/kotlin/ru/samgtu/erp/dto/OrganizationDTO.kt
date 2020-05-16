@@ -17,5 +17,5 @@ data class OrganizationDTO(
         @NotNull
         var title: String,
 
-        var isDeleted: Boolean
+        var isDeleted: Boolean = false
 )

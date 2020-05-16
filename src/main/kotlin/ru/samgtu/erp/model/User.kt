@@ -27,7 +27,7 @@ data class User(
         @Column(name = "is_deleted")
         var isDeleted: Boolean = false
 ) {
-    @ManyToMany(targetEntity = Role::class)
+    @ManyToMany(targetEntity = Role::class, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],

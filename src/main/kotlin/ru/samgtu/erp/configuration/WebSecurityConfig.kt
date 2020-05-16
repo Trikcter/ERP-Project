@@ -78,7 +78,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         configuration.addAllowedHeader("Content-Type")
         configuration.addAllowedHeader("Accept")
         configuration.addAllowedHeader("Content-Disposition")
-        configuration.addAllowedHeader("token")
+        configuration.addAllowedHeader("Authorization")
 
         configuration.addExposedHeader("Content-Disposition")
 

@@ -17,7 +17,7 @@ class JwtAuthenticationEntryPoint : AuthenticationEntryPoint {
                           e: AuthenticationException) {
 
         logger.error("Unauthorized error. Message - {}", e.message)
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials")
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Неверный логин или пароль")
     }
 
     companion object {
