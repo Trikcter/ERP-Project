@@ -6,8 +6,8 @@ import javax.persistence.*
 @Table(name = "organization")
 data class Organization(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        override var id: Long = 0,
 
         @Column(name = "inn", nullable = false)
         var inn: String,
@@ -21,23 +21,29 @@ data class Organization(
         @Column(name = "title", nullable = false)
         var title: String,
 
-        // TODO: Переделать сохранение изображения
-        /*@Column(name = "logo")
-        var logo: String? = null,*/
-
         @Column(name = "is_deleted", nullable = false)
-        var isDeleted: Boolean,
+        override var isDeleted: Boolean
+) : AbstractEntity {
+    constructor(id: Long) : this(id, "", "", "", "", false)
 
-        @OneToMany(fetch = FetchType.LAZY)
-        var staff: Collection<User>? = null,
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", nullable = false, referencedColumnName = "id")
+    lateinit var address: Address
 
-        @OneToMany(fetch = FetchType.LAZY)
-        var goods: Collection<Product>? = null,
+    @OneToMany(fetch = FetchType.LAZY)
+    var staff: Collection<User>? = null
 
-        @OneToMany(fetch = FetchType.LAZY)
-        var warehouses: Collection<Warehouse>,
+    @OneToMany(fetch = FetchType.LAZY)
+    var goods: Collection<Product>? = null
 
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "balance_id", referencedColumnName = "id")
-        var balance: Balance
-)
+    @OneToMany(fetch = FetchType.LAZY)
+    var warehouses: Collection<Warehouse>? = null
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "balance_id", referencedColumnName = "id")
+    lateinit var balance: Balance
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    lateinit var owner: User
+}

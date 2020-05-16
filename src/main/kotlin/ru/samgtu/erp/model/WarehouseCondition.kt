@@ -9,17 +9,17 @@ import javax.persistence.*
 @Table(name = "warehouse_condition")
 data class WarehouseCondition(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
-
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")
-        var product: Product,
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "warehouse_id")
-        var warehouse: Warehouse,
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Long = 0,
 
         @Column(name = "count", nullable = false)
         var count: Long
-)
+) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")
+    lateinit var product: Product
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "warehouse_id")
+    lateinit var warehouse: Warehouse
+}

@@ -1,6 +1,6 @@
 package ru.samgtu.erp.exception
 
-class UserAlreadyException : RuntimeException {
+class UserAlreadyExistsException : RuntimeException {
     constructor() : super() {}
 
     constructor(message: String, cause: Throwable) : super(message, cause) {}

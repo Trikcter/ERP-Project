@@ -7,19 +7,23 @@ import javax.persistence.*
 @Table(name = "balance")
 data class Balance(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
-
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "organization_id", nullable = false, referencedColumnName = "id")
-        var organization: Organization,
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Long = 0,
 
         @Column(name = "all_balance", nullable = false)
-        var allBalance: BigDecimal,
+        var allBalance: BigDecimal
+) {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "balance")
+    var orderOperations: Collection<Order>? = null
 
-        @OneToMany(fetch = FetchType.LAZY, mappedBy = "balance")
-        var orderOperations: Collection<Order>?,
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "balance")
+    var bankOperations: Collection<BankOperation>? = null
 
-        @OneToMany(fetch = FetchType.LAZY, mappedBy = "balance")
-        var bankOperations: Collection<BankOperation>?
-)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id", referencedColumnName = "id")
+    lateinit var organization: Organization
+
+    constructor(id: Long, balance: BigDecimal, organization: Organization) : this(id, balance) {
+        this.organization = organization
+    }
+}

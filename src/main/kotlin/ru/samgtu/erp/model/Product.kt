@@ -7,8 +7,8 @@ import javax.persistence.*
 @Table(name = "product")
 data class Product(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        override var id: Long = 0,
 
         @Column(name = "title", nullable = false)
         var title: String,
@@ -19,6 +19,10 @@ data class Product(
         @Column(name = "price", nullable = false)
         var price: BigDecimal,
 
+        @OneToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "organization_id", referencedColumnName = "id")
+        var organization: Organization,
+
         @Column(name = "is_deleted", nullable = false)
-        var isDeleted: Boolean
-)
+        override var isDeleted: Boolean
+) : AbstractEntity

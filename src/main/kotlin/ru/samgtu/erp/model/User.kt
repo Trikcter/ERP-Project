@@ -6,8 +6,8 @@ import javax.persistence.*
 @Table(name = "users")
 data class User(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Long = 0,
 
         @Column(name = "login", nullable = false)
         var login: String,
@@ -25,17 +25,17 @@ data class User(
         var surname: String,
 
         @Column(name = "is_deleted")
-        var isDeleted: Boolean = false,
+        var isDeleted: Boolean = false
+) {
+    @ManyToMany(targetEntity = Role::class, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+            inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
+    )
+    var roles: Collection<Role>? = null
 
-        @ManyToMany
-        @JoinTable(
-                name = "users_roles",
-                joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-                inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
-        )
-        var roles: Collection<Role>? = null,
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "organization_id")
-        var organization: Organization? = null
-)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Organization::class)
+    @JoinColumn(name = "organization_id")
+    var organization: Organization? = null
+}
