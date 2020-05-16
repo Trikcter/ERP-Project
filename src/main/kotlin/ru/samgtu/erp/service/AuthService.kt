@@ -25,19 +25,19 @@ import javax.transaction.Transactional
 @Service
 class AuthService {
     @Autowired
-    lateinit var authenticationManager: AuthenticationManager
+    private lateinit var authenticationManager: AuthenticationManager
 
     @Autowired
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
 
     @Autowired
-    lateinit var roleRepository: RoleRepository
+    private lateinit var roleRepository: RoleRepository
 
     @Autowired
-    lateinit var encoder: PasswordEncoder
+    private lateinit var encoder: PasswordEncoder
 
     @Autowired
-    lateinit var jwtProvider: JwtProvider
+    private lateinit var jwtProvider: JwtProvider
 
     fun authenticate(loginRequest: LoginDTO): ResponseEntity<*> {
         val userCandidate: Optional<User> = userRepository.findByLogin(loginRequest.username)

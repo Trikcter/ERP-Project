@@ -6,7 +6,7 @@ import javax.persistence.*
 @Table(name = "warehouse")
 data class Warehouse(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         override var id: Long = 0,
 
         @Column(name = "title", nullable = false)

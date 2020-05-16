@@ -1,20 +1,18 @@
 package ru.samgtu.erp.dto
 
-import java.math.BigDecimal
 import javax.validation.constraints.NotNull
 
-data class ProductDTO(
+data class WarehouseDTO(
         var id: Long,
 
         @NotNull
         var title: String,
 
-        var code: String?,
+        @NotNull
+        var organizationId: Long,
 
         @NotNull
-        var price: BigDecimal,
-
-        var organizationId: Long,
+        var addressTitle: String,
 
         var isDeleted: Boolean
 )

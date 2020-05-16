@@ -3,12 +3,14 @@ package ru.samgtu.erp.service
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.transaction.annotation.Transactional
 import ru.samgtu.erp.model.AbstractEntity
 import javax.persistence.EntityNotFoundException
 
 abstract class CrudService<T : AbstractEntity> {
     abstract fun getRepository(): JpaRepository<T, Long>
 
+    @Transactional
     open fun save(entity: T): T {
         return getRepository().save(entity)
     }
@@ -22,6 +24,7 @@ abstract class CrudService<T : AbstractEntity> {
         return getRepository().findAll(pageable)
     }
 
+    @Transactional
     open fun delete(ids: List<Long>) {
         val entities = ids.map {
             val entity = getRepository().findById(it).orElseThrow { throw EntityNotFoundException() }

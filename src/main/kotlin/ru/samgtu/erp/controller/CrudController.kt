@@ -15,7 +15,7 @@ import ru.samgtu.erp.service.CrudService
  * T - тип сущности
  *
  */
-abstract class CrudRepository<X, T : AbstractEntity> {
+abstract class CrudController<X, T : AbstractEntity> {
     /**
      * Функция, возвращающая маппер для маппинга сущностей
      */
@@ -49,7 +49,7 @@ abstract class CrudRepository<X, T : AbstractEntity> {
     }
 
     @DeleteMapping
-    fun deleteOrganizationsById(@RequestBody ids: List<Long>): ResponseEntity<Any> {
+    fun deleteOrganizationsById(ids: List<Long>): ResponseEntity<Any> {
         getService().delete(ids)
         return ResponseEntity.ok().build()
     }

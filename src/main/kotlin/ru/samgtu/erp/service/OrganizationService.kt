@@ -11,17 +11,21 @@ import javax.persistence.EntityNotFoundException
 @Service
 class OrganizationService : CrudService<Organization>() {
     @Autowired
-    lateinit var organizationRepository: OrganizationRepository
+    private lateinit var organizationRepository: OrganizationRepository
 
     @Autowired
-    lateinit var balanceService: BalanceService
+    private lateinit var balanceService: BalanceService
 
     @Autowired
-    lateinit var userService: UserService
+    private lateinit var userService: UserService
 
     @Transactional
     override fun save(entity: Organization): Organization {
         val saved = organizationRepository.save(entity.copy())
+
+//        val user = userService.getCurrentUser()
+//        user.organization = saved
+//        userService.saveUser(user)
 
         return if (entity.id == 0L) {
             val balance = balanceService.createBalance(saved)

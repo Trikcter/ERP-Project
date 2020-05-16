@@ -24,6 +24,12 @@ data class Organization(
         @Column(name = "is_deleted", nullable = false)
         override var isDeleted: Boolean
 ) : AbstractEntity {
+    constructor(id: Long) : this(id, "", "", "", "", false)
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", nullable = false, referencedColumnName = "id")
+    lateinit var address: Address
+
     @OneToMany(fetch = FetchType.LAZY)
     var staff: Collection<User>? = null
 

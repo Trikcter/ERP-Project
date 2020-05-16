@@ -6,7 +6,7 @@ import javax.persistence.*
 @Table(name = "address")
 data class Address(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         override var id: Long = 0,
 
         @Column(name = "title", nullable = false)
@@ -14,4 +14,6 @@ data class Address(
 
         @Column(name = "is_deleted", nullable = false)
         override var isDeleted: Boolean
-) : AbstractEntity
+) : AbstractEntity {
+    constructor(title: String) : this(0L, title, false)
+}

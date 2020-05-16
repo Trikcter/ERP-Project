@@ -9,7 +9,7 @@ import javax.persistence.*
 @Table(name = "warehouse_condition")
 data class WarehouseCondition(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long = 0,
 
         @Column(name = "count", nullable = false)

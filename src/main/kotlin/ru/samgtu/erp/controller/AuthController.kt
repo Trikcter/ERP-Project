@@ -15,7 +15,7 @@ import javax.validation.Valid
 @RequestMapping("/api/v1/auth")
 class AuthController {
     @Autowired
-    lateinit var authService: AuthService
+    private lateinit var authService: AuthService
 
     @PostMapping("/sign-in")
     fun authenticateUser(@Valid @RequestBody loginRequest: LoginDTO): ResponseEntity<*> {

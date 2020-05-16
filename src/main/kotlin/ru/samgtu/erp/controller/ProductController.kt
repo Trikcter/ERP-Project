@@ -1,6 +1,9 @@
 package ru.samgtu.erp.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.samgtu.erp.dto.ProductDTO
@@ -12,12 +15,21 @@ import ru.samgtu.erp.service.ProductService
 
 @RestController
 @RequestMapping("/api/v1/product")
-class ProductController : CrudRepository<ProductDTO, Product>() {
+class ProductController : CrudController<ProductDTO, Product>() {
     @Autowired
-    lateinit var productMapper: ProductMapper
+    private lateinit var productMapper: ProductMapper
 
     @Autowired
-    lateinit var productService: ProductService
+    private lateinit var productService: ProductService
+
+    @PostMapping("/all")
+    fun saveAll(@RequestBody products: List<ProductDTO>): ResponseEntity<*> {
+        val entities = products.map {
+            productMapper.dto2model(it)
+        }
+
+        return productService.saveAll(entities)
+    }
 
     override fun getMapper(): CrudMapper<ProductDTO, Product> {
         return productMapper

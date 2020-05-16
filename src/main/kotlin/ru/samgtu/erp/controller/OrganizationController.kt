@@ -12,12 +12,12 @@ import ru.samgtu.erp.service.OrganizationService
 
 @RestController
 @RequestMapping("/api/v1/organization")
-class OrganizationController : CrudRepository<OrganizationDTO, Organization>() {
+class OrganizationController : CrudController<OrganizationDTO, Organization>() {
     @Autowired
-    lateinit var organizationService: OrganizationService
+    private lateinit var organizationService: OrganizationService
 
     @Autowired
-    lateinit var organizationMapper: OrganizationMapper
+    private lateinit var organizationMapper: OrganizationMapper
 
     override fun getMapper(): CrudMapper<OrganizationDTO, Organization> {
         return organizationMapper
