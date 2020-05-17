@@ -12,6 +12,7 @@ class WarehouseMapper : CrudMapper<WarehouseDTO, Warehouse> {
         val warehouse = Warehouse(
                 dto.id,
                 dto.title,
+                dto.volume,
                 dto.isDeleted
         )
 
@@ -27,6 +28,7 @@ class WarehouseMapper : CrudMapper<WarehouseDTO, Warehouse> {
                 model.title,
                 model.organization.id,
                 model.address.title,
+                model.volume,
                 model.isDeleted
         )
     }

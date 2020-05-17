@@ -14,5 +14,8 @@ data class WarehouseDTO(
         @NotNull
         var addressTitle: String,
 
+        @NotNull
+        var volume: Long,
+
         var isDeleted: Boolean
 )
