@@ -6,12 +6,12 @@ class StringUtils {
             return fio.split(" ")
         }
 
-        fun getShortFio(fio: String): String {
-            val name = this.getNameFromFio(fio)
-            val surname = this.getSurnameFromFio(fio)
-            val secondName = this.getSecondNameFromFio(fio)
-
-            return surname + " " + name[1] + ". " + secondName[1] + "."
+        fun getShortFio(name: String, surname: String, secondName: String?): String {
+            return if (secondName == "") {
+                surname + " " + name[0] + "."
+            } else {
+                surname + " " + name[0] + ". " + (secondName?.get(0) ?: "") + "."
+            }
         }
 
         fun getNameFromFio(fio: String): String {
@@ -19,11 +19,7 @@ class StringUtils {
         }
 
         fun getSurnameFromFio(fio: String): String {
-            return if (this.getNameArray(fio).size == 2) {
-                ""
-            } else {
-                this.getNameArray(fio)[2]
-            }
+            return this.getNameArray(fio)[0]
         }
 
         fun getSecondNameFromFio(fio: String): String {
