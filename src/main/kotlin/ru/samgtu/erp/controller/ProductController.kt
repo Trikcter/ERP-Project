@@ -27,6 +27,12 @@ class ProductController : CrudController<ProductDTO, Product>() {
                 .map { entity -> productMapper.model2dto(entity) }
     }
 
+    @GetMapping("/active/{id}")
+    fun getAllActiveByOrganization(@PathVariable id: Long, pageable: Pageable): Page<ProductDTO> {
+        return productService.getAllActiveById(id, pageable)
+                .map { entity -> productMapper.model2dto(entity) }
+    }
+
     @PostMapping("/all")
     fun saveAll(@RequestBody products: List<ProductDTO>): ResponseEntity<*> {
         val entities = products.map {

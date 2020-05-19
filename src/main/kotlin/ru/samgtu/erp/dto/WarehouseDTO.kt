@@ -18,4 +18,6 @@ data class WarehouseDTO(
         var volume: Long,
 
         var isDeleted: Boolean
-)
+) {
+        var condition: List<WarehouseConditionDTO>? = null
+}

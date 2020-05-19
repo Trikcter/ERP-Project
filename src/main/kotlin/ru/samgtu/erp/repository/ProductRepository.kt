@@ -10,4 +10,6 @@ import ru.samgtu.erp.model.Product
 @Repository
 interface ProductRepository : JpaRepository<Product, Long> {
     fun findAllByOrganization(organization: Organization, pageable: Pageable): Page<Product>
+
+    fun findAllByOrganizationAndIsDeletedIsFalse(organization: Organization, pageable: Pageable): Page<Product>
 }

@@ -21,6 +21,12 @@ class ProductService : CrudService<Product>() {
         return productRepository
     }
 
+    fun getAllActiveById(id: Long, pageable: Pageable): Page<Product> {
+        val organization = organizationService.getById(id)
+
+        return productRepository.findAllByOrganizationAndIsDeletedIsFalse(organization, pageable)
+    }
+
     fun getAllById(id: Long, pageable: Pageable): Page<Product> {
         val organization = organizationService.getById(id)
 

@@ -25,4 +25,6 @@ data class Product(
 
         @Column(name = "is_deleted", nullable = false)
         override var isDeleted: Boolean
-) : AbstractEntity
+) : AbstractEntity {
+        constructor(id: Long) : this(id, "", "", BigDecimal.ZERO, Organization(0L), false)
+}
