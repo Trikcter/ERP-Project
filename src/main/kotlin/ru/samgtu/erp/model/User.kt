@@ -7,7 +7,7 @@ import javax.persistence.*
 data class User(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0,
+        override var id: Long = 0,
 
         @Column(name = "login", nullable = false)
         var login: String,
@@ -25,8 +25,8 @@ data class User(
         var surname: String,
 
         @Column(name = "is_deleted")
-        var isDeleted: Boolean = false
-) {
+        override var isDeleted: Boolean = false
+) : AbstractEntity {
     @ManyToMany(targetEntity = Role::class, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",

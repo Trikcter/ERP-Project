@@ -49,7 +49,7 @@ abstract class CrudController<X, T : AbstractEntity> {
     }
 
     @DeleteMapping
-    fun deleteOrganizationsById(ids: List<Long>): ResponseEntity<Any> {
+    fun deleteOrganizationsById(@RequestBody ids: List<Long>): ResponseEntity<Any> {
         getService().delete(ids)
         return ResponseEntity.ok().build()
     }

@@ -12,9 +12,15 @@ data class Warehouse(
         @Column(name = "title", nullable = false)
         var title: String,
 
+        @Column(name = "volume", nullable = false)
+        var volume: Long,
+
         @Column(name = "is_deleted", nullable = false)
         override var isDeleted: Boolean
 ) : AbstractEntity {
+
+    constructor(id: Long) : this(id, "", 0L, false)
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", nullable = false, referencedColumnName = "id")
     lateinit var address: Address

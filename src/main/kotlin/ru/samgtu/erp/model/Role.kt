@@ -10,5 +10,8 @@ data class Role(
         val id: Long,
 
         @Column(name = "name", nullable = false)
-        val name: String
+        val name: String,
+
+        @Column(name = "description", nullable = false)
+        val description: String
 )

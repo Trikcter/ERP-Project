@@ -6,12 +6,20 @@ class StringUtils {
             return fio.split(" ")
         }
 
+        fun getShortFio(name: String, surname: String, secondName: String?): String {
+            return if (secondName == "") {
+                surname + " " + name[0] + "."
+            } else {
+                surname + " " + name[0] + ". " + (secondName?.get(0) ?: "") + "."
+            }
+        }
+
         fun getNameFromFio(fio: String): String {
             return this.getNameArray(fio)[1]
         }
 
         fun getSurnameFromFio(fio: String): String {
-            return this.getNameArray(fio)[2]
+            return this.getNameArray(fio)[0]
         }
 
         fun getSecondNameFromFio(fio: String): String {

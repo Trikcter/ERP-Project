@@ -26,6 +26,9 @@ data class Organization(
 ) : AbstractEntity {
     constructor(id: Long) : this(id, "", "", "", "", false)
 
+    @Column(name = "url", nullable = true)
+    var url: String = ""
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", nullable = false, referencedColumnName = "id")
     lateinit var address: Address

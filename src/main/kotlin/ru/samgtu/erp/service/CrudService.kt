@@ -24,6 +24,12 @@ abstract class CrudService<T : AbstractEntity> {
         return getRepository().findAll(pageable)
     }
 
+    fun getById(id: Long?): T {
+        val entityId = id ?: throw EntityNotFoundException()
+
+        return getRepository().findById(entityId).orElseThrow { throw EntityNotFoundException() }
+    }
+
     @Transactional
     open fun delete(ids: List<Long>) {
         val entities = ids.map {

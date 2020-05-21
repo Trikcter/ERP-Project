@@ -1,11 +1,10 @@
 package ru.samgtu.erp.controller
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import ru.samgtu.erp.dto.ProductDTO
 import ru.samgtu.erp.mapper.CrudMapper
 import ru.samgtu.erp.mapper.ProductMapper
@@ -21,6 +20,18 @@ class ProductController : CrudController<ProductDTO, Product>() {
 
     @Autowired
     private lateinit var productService: ProductService
+
+    @GetMapping("/all/{id}")
+    fun getAllByOrganization(@PathVariable id: Long, pageable: Pageable): Page<ProductDTO> {
+        return productService.getAllById(id, pageable)
+                .map { entity -> productMapper.model2dto(entity) }
+    }
+
+    @GetMapping("/active/{id}")
+    fun getAllActiveByOrganization(@PathVariable id: Long, pageable: Pageable): Page<ProductDTO> {
+        return productService.getAllActiveById(id, pageable)
+                .map { entity -> productMapper.model2dto(entity) }
+    }
 
     @PostMapping("/all")
     fun saveAll(@RequestBody products: List<ProductDTO>): ResponseEntity<*> {

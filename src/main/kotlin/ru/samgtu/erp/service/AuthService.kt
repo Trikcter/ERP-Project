@@ -53,7 +53,13 @@ class AuthService {
             val authorities: List<GrantedAuthority> = user.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
                     .collect(Collectors.toList<GrantedAuthority>())
 
-            ResponseEntity.ok(JwtResponse(jwt, user.login, user.organization?.title, authorities))
+            ResponseEntity.ok(
+                    JwtResponse(jwt,
+                            user.login,
+                            user.organization?.id,
+                            user.organization?.title,
+                            authorities,
+                            StringUtils.getShortFio(user.firstName, user.surname, user.secondName)))
         } else {
             ResponseEntity("Такого пользователя нет",
                     HttpStatus.BAD_REQUEST)
@@ -87,7 +93,13 @@ class AuthService {
             val authorities: List<GrantedAuthority> = savedUser.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
                     .collect(Collectors.toList<GrantedAuthority>())
 
-            return ResponseEntity.ok(JwtResponse(jwt, user.login, user.organization?.title, authorities))
+            return ResponseEntity.ok(
+                    JwtResponse(jwt,
+                            user.login,
+                            user.organization?.id,
+                            user.organization?.title,
+                            authorities,
+                            StringUtils.getShortFio(user.firstName, user.surname, user.secondName)))
         } else {
             return ResponseEntity("Такой пользовать уже существует",
                     HttpStatus.BAD_REQUEST)
