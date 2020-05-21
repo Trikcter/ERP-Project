@@ -102,12 +102,6 @@ class OrganizationService : CrudService<Organization>() {
         }
     }
 
-    fun getById(id: Long?): Organization {
-        val entityId = id ?: throw EntityNotFoundException()
-
-        return organizationRepository.findById(entityId).orElseThrow { throw EntityNotFoundException() }
-    }
-
     override fun getRepository(): JpaRepository<Organization, Long> {
         return organizationRepository
     }
