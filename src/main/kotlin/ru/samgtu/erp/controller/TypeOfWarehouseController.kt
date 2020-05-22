@@ -11,7 +11,7 @@ import ru.samgtu.erp.service.HandbookService
 import ru.samgtu.erp.service.TypeOfWarehouseOperationService
 
 @RestController
-@RequestMapping("/api/v1/warehouse_operation")
+@RequestMapping("/api/v1/warehouse_operations")
 class TypeOfWarehouseController : HandbookController<TypeOfWarehouseDTO, TypeOfWarehouseOperation>() {
     @Autowired
     private lateinit var typeOfWarehouseService: TypeOfWarehouseOperationService

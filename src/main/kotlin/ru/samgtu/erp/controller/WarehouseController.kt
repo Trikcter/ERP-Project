@@ -16,7 +16,7 @@ import ru.samgtu.erp.service.WarehouseService
 import javax.validation.constraints.NotNull
 
 @RestController
-@RequestMapping("/api/v1/warehouse")
+@RequestMapping("/api/v1/warehouses")
 class WarehouseController : CrudController<WarehouseDTO, Warehouse>() {
     @Autowired
     private lateinit var warehouseMapper: WarehouseMapper
@@ -39,7 +39,13 @@ class WarehouseController : CrudController<WarehouseDTO, Warehouse>() {
                 .map { entity -> warehouseMapper.model2dto(entity) }
     }
 
-    @PostMapping("/condition")
+    @GetMapping("/conditions/{id}")
+    fun getAllConditions(@PathVariable id: Long, pageable: Pageable): Page<WarehouseConditionDTO> {
+        return warehouseService.getConditionsById(id, pageable)
+                .map { warehouseConditionMapper.model2dto(it) }
+    }
+
+    @PostMapping("/conditions")
     fun getConditionForWarehouse(@RequestBody condition: WarehouseConditionDTO,
                                  @RequestParam @NotNull typeOperation: Long,
                                  @RequestParam warehouseId: Long?): ResponseEntity<*> {

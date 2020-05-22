@@ -31,4 +31,7 @@ data class Warehouse(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", nullable = false)
     lateinit var organization: Organization
+
+    @Transient
+    var congestion: Double = 0.0
 }

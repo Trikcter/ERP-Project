@@ -1,7 +1,6 @@
 package ru.samgtu.erp.service
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -12,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import ru.samgtu.erp.dto.LoginDTO
 import ru.samgtu.erp.dto.RegistrationDTO
+import ru.samgtu.erp.exception.ERPException
 import ru.samgtu.erp.model.User
 import ru.samgtu.erp.repository.RoleRepository
 import ru.samgtu.erp.repository.UserRepository
@@ -22,6 +22,9 @@ import java.util.*
 import java.util.stream.Collectors
 import javax.transaction.Transactional
 
+/**
+ * Сервис для аутентифкации пользователей
+ */
 @Service
 class AuthService {
     @Autowired
@@ -39,6 +42,11 @@ class AuthService {
     @Autowired
     private lateinit var jwtProvider: JwtProvider
 
+    /**
+     * Аутентификация
+     *
+     * @param loginRequest - запрос на аутентификации (credentials)
+     */
     fun authenticate(loginRequest: LoginDTO): ResponseEntity<*> {
         val userCandidate: Optional<User> = userRepository.findByLogin(loginRequest.username)
 
@@ -61,19 +69,22 @@ class AuthService {
                             authorities,
                             StringUtils.getShortFio(user.firstName, user.surname, user.secondName)))
         } else {
-            ResponseEntity("Такого пользователя нет",
-                    HttpStatus.BAD_REQUEST)
+            throw ERPException("Такого пользователя нет!")
         }
     }
 
+    /**
+     * Регистрация нового пользователя через окно регистрации
+     *
+     * @param newUser - новый пользователь
+     */
     @Transactional
     fun registration(newUser: RegistrationDTO): ResponseEntity<*> {
         val userCandidate: Optional<User> = userRepository.findByLogin(newUser.username)
 
         if (!userCandidate.isPresent) {
             if (userRepository.existsByLogin(newUser.username)) {
-                return ResponseEntity("Это имя уже занято",
-                        HttpStatus.BAD_REQUEST)
+                throw ERPException("Это имя уже занято!")
             }
 
             val user = User(
@@ -101,8 +112,7 @@ class AuthService {
                             authorities,
                             StringUtils.getShortFio(user.firstName, user.surname, user.secondName)))
         } else {
-            return ResponseEntity("Такой пользовать уже существует",
-                    HttpStatus.BAD_REQUEST)
+            throw ERPException("Такой пользователь уже существует!")
         }
     }
 }

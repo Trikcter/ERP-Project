@@ -8,24 +8,27 @@ import ru.samgtu.erp.repository.UserRepository
 import ru.samgtu.erp.utils.SecurityUtils
 import javax.persistence.EntityNotFoundException
 
+/**
+ * Сервис для работы с сущностью User
+ */
 @Service
 class UserService {
     @Autowired
     private lateinit var userRepository: UserRepository
 
-    fun getCurrentUserId(): Long? {
-        val username = SecurityUtils.getUserName()
-
-        return userRepository.findByLogin(username)
-                .orElseThrow { throw EntityNotFoundException() }
-                .id
-    }
-
+    /**
+     * Сохранение пользователя
+     *
+     * @param user - Пользователь
+     */
     @Transactional
     fun saveUser(user: User): User {
         return userRepository.save(user)
     }
 
+    /**
+     * Получение текущего principal объекта
+     */
     fun getCurrentUser(): User {
         val username = SecurityUtils.getUserName()
 

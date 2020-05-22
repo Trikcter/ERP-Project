@@ -25,7 +25,7 @@ abstract class CrudController<X, T : AbstractEntity> {
 
     @GetMapping("{id}")
     fun getEntityById(@PathVariable id: Long): X {
-        return getMapper().model2dto(getService().getEntityById(id))
+        return getMapper().model2dto(getService().getById(id))
     }
 
     @GetMapping("/all")
@@ -49,7 +49,7 @@ abstract class CrudController<X, T : AbstractEntity> {
     }
 
     @DeleteMapping
-    fun deleteOrganizationsById(@RequestBody ids: List<Long>): ResponseEntity<Any> {
+    fun deleteByIds(@RequestBody ids: List<Long>): ResponseEntity<Any> {
         getService().delete(ids)
         return ResponseEntity.ok().build()
     }

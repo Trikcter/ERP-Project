@@ -13,7 +13,7 @@ import ru.samgtu.erp.service.CrudService
 import ru.samgtu.erp.service.ProductService
 
 @RestController
-@RequestMapping("/api/v1/product")
+@RequestMapping("/api/v1/products")
 class ProductController : CrudController<ProductDTO, Product>() {
     @Autowired
     private lateinit var productMapper: ProductMapper

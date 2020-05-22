@@ -19,5 +19,5 @@ data class WarehouseDTO(
 
         var isDeleted: Boolean
 ) {
-        var condition: List<WarehouseConditionDTO>? = null
+    var congestion: Double = 0.0
 }
