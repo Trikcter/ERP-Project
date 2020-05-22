@@ -13,7 +13,7 @@ import ru.samgtu.erp.service.OrganizationService
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-@RequestMapping("/api/v1/organization")
+@RequestMapping("/api/v1/organizations")
 class OrganizationController : CrudController<OrganizationDTO, Organization>() {
     @Autowired
     private lateinit var organizationService: OrganizationService
@@ -21,9 +21,9 @@ class OrganizationController : CrudController<OrganizationDTO, Organization>() {
     @Autowired
     private lateinit var organizationMapper: OrganizationMapper
 
-    @PostMapping("/file")
-    fun saveFile(@RequestBody file: MultipartFile): ResponseEntity<*> {
-        return organizationService.saveFile(file)
+    @PostMapping("/file/{id}")
+    fun saveFile(@RequestBody file: MultipartFile, @PathVariable id: Long): ResponseEntity<*> {
+        return organizationService.saveFile(file, id)
     }
 
     @GetMapping("/file/{id}")

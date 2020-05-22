@@ -1,6 +1,5 @@
 package ru.samgtu.erp.mapper
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import ru.samgtu.erp.dto.WarehouseDTO
 import ru.samgtu.erp.model.Address
@@ -9,9 +8,6 @@ import ru.samgtu.erp.model.Warehouse
 
 @Component
 class WarehouseMapper : CrudMapper<WarehouseDTO, Warehouse> {
-    @Autowired
-    private lateinit var warehouseConditionMapper: WarehouseConditionMapper
-
     override fun dto2model(dto: WarehouseDTO): Warehouse {
         val warehouse = Warehouse(
                 dto.id,
@@ -36,7 +32,7 @@ class WarehouseMapper : CrudMapper<WarehouseDTO, Warehouse> {
                 model.isDeleted
         )
 
-        dto.condition = model.conditions?.map { warehouseConditionMapper.model2dto(it) }
+        dto.congestion = model.congestion
 
         return dto
     }

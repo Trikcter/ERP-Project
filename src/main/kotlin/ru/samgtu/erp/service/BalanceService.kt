@@ -13,14 +13,14 @@ class BalanceService {
     @Autowired
     private lateinit var balanceRepository: BalanceRepository
 
+    /**
+     * Создание баланса организации
+     *
+     * @param organization - организация
+     */
     @Transactional
     fun createBalance(organization: Organization): Balance {
         val balance = Balance(0, BigDecimal.ZERO, organization)
-        return balanceRepository.save(balance)
-    }
-
-    @Transactional
-    fun save(balance: Balance): Balance {
         return balanceRepository.save(balance)
     }
 }

@@ -11,7 +11,7 @@ import ru.samgtu.erp.service.HandbookService
 import ru.samgtu.erp.service.TypeOfFinancialOperationService
 
 @RestController
-@RequestMapping("/api/v1/financial_operation")
+@RequestMapping("/api/v1/financial_operations")
 class TypeOfFinancialController : HandbookController<TypeOfFinancialDTO, TypeOfFinancialOperation>() {
     @Autowired
     private lateinit var typeOfFinancialOperationService: TypeOfFinancialOperationService

@@ -7,16 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.samgtu.erp.exception.ERPException
 import ru.samgtu.erp.model.Address
 import ru.samgtu.erp.model.Warehouse
 import ru.samgtu.erp.model.WarehouseCondition
-import ru.samgtu.erp.model.WarehouseOperation
 import ru.samgtu.erp.repository.AddressRepository
 import ru.samgtu.erp.repository.WarehouseConditionRepository
-import ru.samgtu.erp.repository.WarehouseOperationRepository
 import ru.samgtu.erp.repository.WarehouseRepository
-import java.time.LocalDateTime
 
 @Service
 class WarehouseService : CrudService<Warehouse>() {
@@ -36,92 +32,41 @@ class WarehouseService : CrudService<Warehouse>() {
     private lateinit var productService: ProductService
 
     @Autowired
-    private lateinit var warehouseOperationRepository: WarehouseOperationRepository
+    private lateinit var warehouseConditionService: WarehouseConditionService
 
     @Autowired
     private lateinit var warehouseConditionRepository: WarehouseConditionRepository
 
+    @Autowired
+    private lateinit var warehouseValidService: WarehouseValidService
+
+    /**
+     * Сохранение нового состояния склада
+     *
+     * @param warehouseCondition - новое состояние
+     * @param typeOperationId - ID типа операции, происходящей на склада
+     * @param warehouseId - ID второго склада, участвующего в операции
+     */
     @Transactional
     fun saveCondition(warehouseCondition: WarehouseCondition,
                       typeOperationId: Long,
                       warehouseId: Long?): ResponseEntity<*> {
         val product = productService.getById(warehouseCondition.product.id)
         val typeOperation = typeOfWarehouseOperationService.getById(typeOperationId)
-
         val currentWarehouse = this.getById(warehouseCondition.warehouse.id)
 
-        val condition = warehouseConditionRepository.findFirstByProductAndWarehouse(product, currentWarehouse)
-                .orElse(WarehouseCondition(0, 0))
-        val futureCount = condition.count + warehouseCondition.count
+        warehouseValidService.validate(product, currentWarehouse, warehouseCondition.count)
 
-        if (futureCount < 0) {
-            throw ERPException("На складе не достаточно товаров данного типа")
-        }
-
-        if (futureCount > currentWarehouse.volume) {
-            throw ERPException("На складе нет места")
-        }
-
-        condition.count += warehouseCondition.count
-
-        if (condition.id == 0L) {
-            condition.product = product
-            condition.warehouse = currentWarehouse
-        }
+        warehouseConditionService.createCondition(warehouseCondition.count, product, currentWarehouse, typeOperation)
 
         if (warehouseId != null) {
             val negativeCount = warehouseCondition.count * -1
-            val anotherWarehouse = this.getById(warehouseId)
-            val anotherConditionOptional = warehouseConditionRepository
-                    .findFirstByProductAndWarehouse(product, anotherWarehouse)
+            val secondWarehouse = this.getById(warehouseId)
 
-            if (!anotherConditionOptional.isPresent && negativeCount > 0) {
-                throw ERPException("На втором складе нет данной продукции")
-            }
+            warehouseValidService.validate(product, secondWarehouse, negativeCount)
 
-            val anotherCondition = anotherConditionOptional.get()
-
-            val anotherFutureCount = anotherCondition.count + negativeCount
-
-            if (anotherFutureCount < 0) {
-                throw ERPException("На втором складе не достаточно товаров данного типа")
-            }
-
-            if (anotherFutureCount > anotherWarehouse.volume) {
-                throw ERPException("На втором складе нет места")
-            }
-
-            anotherCondition.count += warehouseCondition.count
-
-            if (anotherCondition.id == 0L) {
-                anotherCondition.product = product
-                anotherCondition.warehouse = anotherWarehouse
-            }
-
-            val anotherOperation = WarehouseOperation(
-                    0,
-                    warehouseCondition.count,
-                    LocalDateTime.now(),
-                    typeOperation,
-                    currentWarehouse,
-                    product
-            )
-
-            warehouseConditionRepository.save(anotherCondition)
-            warehouseOperationRepository.save(anotherOperation)
+            warehouseConditionService.createCondition(negativeCount, product, secondWarehouse, typeOperation)
         }
-
-        val operation = WarehouseOperation(
-                0,
-                warehouseCondition.count,
-                LocalDateTime.now(),
-                typeOperation,
-                currentWarehouse,
-                product
-        )
-
-        warehouseConditionRepository.save(condition)
-        warehouseOperationRepository.save(operation)
 
         return ResponseEntity.ok("Операция сохранена!")
     }
@@ -142,18 +87,54 @@ class WarehouseService : CrudService<Warehouse>() {
         return warehouseRepository.save(entity)
     }
 
+    /**
+     * Получение всех складов организации
+     *
+     * @param id - ID организации
+     * @param pageable - пагинация
+     */
     fun getAllById(id: Long, pageable: Pageable): Page<Warehouse> {
         val organization = organizationService.getById(id)
 
-        return warehouseRepository.findAllByOrganization(organization, pageable)
+        val warehouses = warehouseRepository.findAllByOrganization(organization, pageable)
+        warehouses.forEach {
+            run {
+                val congestion = this.getCongestion(it.volume, it.conditions as List<WarehouseCondition>)
+                it.congestion = congestion
+            }
+        }
+
+        return warehouses
     }
 
+    /**
+     * Получение информации о состоянии склада
+     *
+     * @param id - ID склада
+     * @param pageable - пагинация
+     */
+    fun getConditionsById(id: Long, pageable: Pageable): Page<WarehouseCondition> {
+        val warehouse = this.getById(id)
+
+        return warehouseConditionRepository.findAllByWarehouse(warehouse, pageable)
+    }
+
+    /**
+     * Получение всех активных складов организации
+     *
+     * @param id - ID организации
+     * @param pageable - пагинация
+     */
     fun getAllActiveById(id: Long, pageable: Pageable): Page<Warehouse> {
         val organization = organizationService.getById(id)
 
         return warehouseRepository.findAllByOrganizationAndIsDeletedIsFalse(organization, pageable)
     }
 
+    /**
+     * Сохранение всех складов, добавляемых для организаци
+     * @param warehouses - список складов
+     */
     fun saveAll(warehouses: List<Warehouse>): ResponseEntity<*> {
         warehouses.forEach {
             this.save(it)
@@ -164,5 +145,18 @@ class WarehouseService : CrudService<Warehouse>() {
 
     override fun getRepository(): JpaRepository<Warehouse, Long> {
         return warehouseRepository
+    }
+
+    /**
+     * Рассчет заполненности склада
+     * @param volume - объем склада
+     * @param conditions - состояние склада
+     */
+    private fun getCongestion(volume: Long, conditions: List<WarehouseCondition>): Double {
+        val count = conditions
+                .map { it.count }
+                .sum()
+
+        return (count.toDouble() / volume.toDouble()) * 100
     }
 }

@@ -66,8 +66,8 @@ class OrganizationService : CrudService<Organization>() {
     }
 
     @Transactional
-    fun saveFile(file: MultipartFile): ResponseEntity<*> {
-        val organization = userService.getCurrentUser().organization
+    fun saveFile(file: MultipartFile, id: Long): ResponseEntity<*> {
+        val organization = this.getById(id)
 
         val dir = File(path)
 
@@ -80,10 +80,8 @@ class OrganizationService : CrudService<Organization>() {
 
         file.transferTo(File(filename))
 
-        if (organization != null) {
-            organization.url = filename
-            organizationRepository.save(organization)
-        }
+        organization.url = filename
+        organizationRepository.save(organization)
 
         return ResponseEntity.ok("Лого добавлено!")
     }
