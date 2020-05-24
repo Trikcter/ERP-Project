@@ -1,0 +1,1 @@
+ALTER TABLE orders ADD COLUMN date_of_operation date NOT NULL;

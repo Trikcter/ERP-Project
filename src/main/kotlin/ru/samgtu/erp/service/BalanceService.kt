@@ -13,6 +13,9 @@ class BalanceService {
     @Autowired
     private lateinit var balanceRepository: BalanceRepository
 
+    @Autowired
+    private lateinit var balanceRegistryService: BalanceRegistryService
+
     /**
      * Создание баланса организации
      *
@@ -21,6 +24,18 @@ class BalanceService {
     @Transactional
     fun createBalance(organization: Organization): Balance {
         val balance = Balance(0, BigDecimal.ZERO, organization)
+
+        balanceRegistryService.createBalanceRegistry(balance)
+
+        return balanceRepository.save(balance)
+    }
+
+    @Transactional
+    fun editBalance(balance: Balance, sum: BigDecimal): Balance {
+        balance.allBalance = balance.allBalance.plus(sum)
+
+        balanceRegistryService.createBalanceRegistry(balance)
+
         return balanceRepository.save(balance)
     }
 }

@@ -21,4 +21,6 @@ data class TypeOfFinancialOperation(
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "organization_id", nullable = false)
         override var organization: Organization
-) : TypeOfOperation
+) : TypeOfOperation {
+    constructor(id: Long) : this(id, "", "", false, Organization(0))
+}
