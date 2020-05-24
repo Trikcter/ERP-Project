@@ -12,4 +12,6 @@ interface WarehouseRepository : JpaRepository<Warehouse, Long> {
     fun findAllByOrganization(organization: Organization, pageable: Pageable): Page<Warehouse>
 
     fun findAllByOrganizationAndIsDeletedIsFalse(organization: Organization, pageable: Pageable): Page<Warehouse>
+
+    fun findAllByOrganizationAndIsDeletedIsFalse(organization: Organization): List<Warehouse>
 }
