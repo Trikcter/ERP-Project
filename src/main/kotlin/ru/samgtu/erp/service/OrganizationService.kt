@@ -52,7 +52,7 @@ class OrganizationService : CrudService<Organization>() {
 
         val user = userService.getCurrentUser()
         user.organization = saved
-        userService.saveUser(user)
+        userService.save(user)
 
         return if (id == 0L) {
             val balance = balanceService.createBalance(saved)

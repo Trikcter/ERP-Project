@@ -28,7 +28,7 @@ abstract class CrudController<X, T : AbstractEntity> {
         return getMapper().model2dto(getService().getById(id))
     }
 
-    @GetMapping("/all")
+    @GetMapping
     fun getAllEntities(page: Pageable): Page<X> {
         return getService().getAll(page)
                 .map { entity -> getMapper().model2dto(entity) }

@@ -2,12 +2,11 @@ package ru.samgtu.erp.controller
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import ru.samgtu.erp.dto.LoginDTO
 import ru.samgtu.erp.dto.RegistrationDTO
+import ru.samgtu.erp.dto.RoleDTO
+import ru.samgtu.erp.mapper.RoleMapper
 import ru.samgtu.erp.service.AuthService
 import javax.validation.Valid
 
@@ -17,6 +16,9 @@ class AuthController {
     @Autowired
     private lateinit var authService: AuthService
 
+    @Autowired
+    private lateinit var roleMapper: RoleMapper
+
     @PostMapping("/sign-in")
     fun authenticateUser(@Valid @RequestBody loginRequest: LoginDTO): ResponseEntity<*> {
         return authService.authenticate(loginRequest)
@@ -25,5 +27,10 @@ class AuthController {
     @PostMapping("/sign-up")
     fun registerUser(@Valid @RequestBody newUser: RegistrationDTO): ResponseEntity<*> {
         return authService.registration(newUser)
+    }
+
+    @GetMapping("/roles")
+    fun getRoles(): List<RoleDTO> {
+        return authService.getAllRoles().map { roleMapper.model2DTO(it) }
     }
 }
