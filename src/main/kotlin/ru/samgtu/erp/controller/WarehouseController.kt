@@ -27,19 +27,19 @@ class WarehouseController : CrudController<WarehouseDTO, Warehouse>() {
     @Autowired
     private lateinit var warehouseService: WarehouseService
 
-    @GetMapping("/all/{id}")
-    fun getAll(@PathVariable id: Long, pageable: Pageable): Page<WarehouseDTO> {
-        return warehouseService.getAllById(id, pageable)
+    @GetMapping("/all")
+    fun getAll(@RequestParam organizationId: Long, pageable: Pageable): Page<WarehouseDTO> {
+        return warehouseService.getAllById(organizationId, pageable)
                 .map { entity -> warehouseMapper.model2dto(entity) }
     }
 
-    @GetMapping("/active/{id}")
-    fun getAllActive(@PathVariable id: Long, pageable: Pageable): Page<WarehouseDTO> {
-        return warehouseService.getAllActiveById(id, pageable)
+    @GetMapping("/all/active")
+    fun getAllActive(@RequestParam organizationId: Long, pageable: Pageable): Page<WarehouseDTO> {
+        return warehouseService.getAllActiveById(organizationId, pageable)
                 .map { entity -> warehouseMapper.model2dto(entity) }
     }
 
-    @GetMapping("/conditions/{id}")
+    @GetMapping("/{id}/conditions")
     fun getAllConditions(@PathVariable id: Long, pageable: Pageable): Page<WarehouseConditionDTO> {
         return warehouseService.getConditionsById(id, pageable)
                 .map { warehouseConditionMapper.model2dto(it) }

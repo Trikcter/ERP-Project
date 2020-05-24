@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service
 import ru.samgtu.erp.dto.LoginDTO
 import ru.samgtu.erp.dto.RegistrationDTO
 import ru.samgtu.erp.exception.ERPException
+import ru.samgtu.erp.model.Role
 import ru.samgtu.erp.model.User
 import ru.samgtu.erp.repository.RoleRepository
 import ru.samgtu.erp.repository.UserRepository
@@ -114,5 +115,9 @@ class AuthService {
         } else {
             throw ERPException("Такой пользователь уже существует!")
         }
+    }
+
+    fun getAllRoles(): List<Role> {
+        return roleRepository.findAll()
     }
 }

@@ -21,15 +21,15 @@ class ProductController : CrudController<ProductDTO, Product>() {
     @Autowired
     private lateinit var productService: ProductService
 
-    @GetMapping("/all/{id}")
-    fun getAllByOrganization(@PathVariable id: Long, pageable: Pageable): Page<ProductDTO> {
-        return productService.getAllById(id, pageable)
+    @GetMapping("/all")
+    fun getAllEntities(@RequestParam organizationId: Long, pageable: Pageable): Page<ProductDTO> {
+        return productService.getAllById(organizationId, pageable)
                 .map { entity -> productMapper.model2dto(entity) }
     }
 
-    @GetMapping("/active/{id}")
-    fun getAllActiveByOrganization(@PathVariable id: Long, pageable: Pageable): Page<ProductDTO> {
-        return productService.getAllActiveById(id, pageable)
+    @GetMapping("/all/active")
+    fun getAllActiveByOrganization(@RequestParam organizationId: Long, pageable: Pageable): Page<ProductDTO> {
+        return productService.getAllActiveById(organizationId, pageable)
                 .map { entity -> productMapper.model2dto(entity) }
     }
 
