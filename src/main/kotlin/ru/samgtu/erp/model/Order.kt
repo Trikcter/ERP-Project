@@ -1,5 +1,6 @@
 package ru.samgtu.erp.model
 
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -10,7 +11,10 @@ data class Order(
         var id: Long = 0,
 
         @Column(name = "count")
-        var count: Long
+        var count: Long,
+
+        @Column(name = "date_of_operation", nullable = false)
+        var dateOfOperation: LocalDateTime
 ) {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Balance::class)
     @JoinColumn(name = "balance_id")
