@@ -8,6 +8,7 @@ import ru.samgtu.erp.dto.RegistrationDTO
 import ru.samgtu.erp.dto.RoleDTO
 import ru.samgtu.erp.mapper.RoleMapper
 import ru.samgtu.erp.service.AuthService
+import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
 
 @RestController
@@ -27,6 +28,11 @@ class AuthController {
     @PostMapping("/sign-up")
     fun registerUser(@Valid @RequestBody newUser: RegistrationDTO): ResponseEntity<*> {
         return authService.registration(newUser)
+    }
+
+    @GetMapping("/logout")
+    fun logoutUser(request: HttpServletRequest) {
+        authService.logout(request)
     }
 
     @GetMapping("/roles")

@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.web.filter.OncePerRequestFilter
+import ru.samgtu.erp.service.RedisJWTService
 import java.io.IOException
 import javax.servlet.FilterChain
 import javax.servlet.ServletException
@@ -18,6 +19,9 @@ class JwtAuthenticationFilter : OncePerRequestFilter() {
 
     @Autowired
     private val userDetailsService: UserDetailsServiceImp? = null
+
+    @Autowired
+    private val redisJWTService: RedisJWTService? = null
 
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
@@ -44,7 +48,14 @@ class JwtAuthenticationFilter : OncePerRequestFilter() {
         val authHeader = request.getHeader("Authorization")
 
         return if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            authHeader.replace("Bearer ", "")
+            val token = authHeader.replace("Bearer ", "")
+
+            return if (redisJWTService?.checkValue(token)!!) {
+                token
+            } else {
+                null
+            }
+
         } else null
     }
 
