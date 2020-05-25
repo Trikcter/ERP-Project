@@ -21,6 +21,7 @@ import ru.samgtu.erp.security.JwtResponse
 import ru.samgtu.erp.utils.StringUtils
 import java.util.*
 import java.util.stream.Collectors
+import javax.servlet.http.HttpServletRequest
 import javax.transaction.Transactional
 
 /**
@@ -43,6 +44,9 @@ class AuthService {
     @Autowired
     private lateinit var jwtProvider: JwtProvider
 
+    @Autowired
+    lateinit var redisJWTService: RedisJWTService
+
     /**
      * Аутентификация
      *
@@ -61,6 +65,8 @@ class AuthService {
             val jwt: String = jwtProvider.generateJwtToken(user.login)
             val authorities: List<GrantedAuthority> = user.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
                     .collect(Collectors.toList<GrantedAuthority>())
+
+            redisJWTService.createValue(jwt, user.login)
 
             ResponseEntity.ok(
                     JwtResponse(jwt,
@@ -105,6 +111,8 @@ class AuthService {
             val authorities: List<GrantedAuthority> = savedUser.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
                     .collect(Collectors.toList<GrantedAuthority>())
 
+            redisJWTService.createValue(jwt, user.login)
+
             return ResponseEntity.ok(
                     JwtResponse(jwt,
                             user.login,
@@ -114,6 +122,16 @@ class AuthService {
                             StringUtils.getShortFio(user.firstName, user.surname, user.secondName)))
         } else {
             throw ERPException("Такой пользователь уже существует!")
+        }
+    }
+
+    fun logout(request: HttpServletRequest) {
+        val authHeader = request.getHeader("Authorization")
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            val token = authHeader.replace("Bearer ", "")
+
+            redisJWTService.deleteValue(token)
         }
     }
 

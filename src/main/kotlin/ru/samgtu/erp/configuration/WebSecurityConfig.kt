@@ -95,11 +95,11 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/auth/*").permitAll()
+                .antMatchers("/api/v1/auth/*", "/api/v1/organizations/file/*").permitAll()
             .anyRequest().authenticated()
             .and()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
         http.addFilterBefore(corsFilter(), SessionManagementFilter::class.java)
