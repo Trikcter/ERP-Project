@@ -15,7 +15,7 @@ data class WarehouseCondition(
         @Column(name = "count", nullable = false)
         var count: Long
 ) {
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")
     lateinit var product: Product
 

@@ -103,7 +103,7 @@ class AuthService {
                     StringUtils.getSurnameFromFio(newUser.fio),
                     false
             )
-            user.roles = listOf(roleRepository.findByName("ADMIN"))
+            user.roles = listOf(roleRepository.findByName("CEO"))
 
             val savedUser = userRepository.save(user)
 
@@ -137,5 +137,7 @@ class AuthService {
 
     fun getAllRoles(): List<Role> {
         return roleRepository.findAll()
+                .filter { it.id != 1L }
+                .toList()
     }
 }

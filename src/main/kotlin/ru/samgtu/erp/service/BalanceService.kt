@@ -25,9 +25,11 @@ class BalanceService {
     fun createBalance(organization: Organization): Balance {
         val balance = Balance(0, BigDecimal.ZERO, organization)
 
-        balanceRegistryService.createBalanceRegistry(balance)
+        val savedBalance = balanceRepository.save(balance)
 
-        return balanceRepository.save(balance)
+        balanceRegistryService.createBalanceRegistry(savedBalance)
+
+        return savedBalance
     }
 
     @Transactional

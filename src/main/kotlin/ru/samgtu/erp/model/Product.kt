@@ -19,7 +19,7 @@ data class Product(
         @Column(name = "price", nullable = false)
         var price: BigDecimal,
 
-        @OneToOne(fetch = FetchType.LAZY)
+        @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "organization_id", referencedColumnName = "id")
         var organization: Organization,
 
