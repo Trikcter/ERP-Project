@@ -6,7 +6,7 @@ import javax.persistence.*
 @Table(name = "warehouse_type_operation")
 data class TypeOfWarehouseOperation(
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE)
         override var id: Long,
 
         @Column(name = "description")
