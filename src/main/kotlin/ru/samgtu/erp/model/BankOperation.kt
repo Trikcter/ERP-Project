@@ -20,7 +20,7 @@ data class BankOperation(
         @Column(name = "date_of_operation", nullable = false)
         var dateOfOperation: LocalDateTime
 ) {
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id", nullable = false, referencedColumnName = "id")
     lateinit var typeOfFinancialOperation: TypeOfFinancialOperation
 

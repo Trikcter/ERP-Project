@@ -45,8 +45,4 @@ data class Organization(
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "balance_id", referencedColumnName = "id")
     lateinit var balance: Balance
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    lateinit var owner: User
 }

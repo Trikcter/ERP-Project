@@ -57,7 +57,6 @@ class OrganizationService : CrudService<Organization>() {
         return if (id == 0L) {
             val balance = balanceService.createBalance(saved)
             saved.balance = balance
-            saved.owner = userService.getCurrentUser()
 
             organizationRepository.save(saved)
         } else {
