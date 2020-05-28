@@ -37,15 +37,23 @@ class WarehouseValidService {
                 throw ERPException("На складе не достаточно товаров данного типа")
             }
 
-            if (futureCount > warehouse.volume) {
-                throw ERPException("На складе нет места")
+            if (count > 0) {
+                if (futureCount > this.getFreeSpace(warehouse)) {
+                    throw ERPException("На складе нет места")
+                }
             }
         }
 
         if (count > 0 && !optionalCondition.isPresent) {
-            if (count > warehouse.volume) {
+            if (count > this.getFreeSpace(warehouse)) {
                 throw ERPException("На складе нет места")
             }
         }
+    }
+
+    private fun getFreeSpace(warehouse: Warehouse): Long {
+        val count = warehouse.conditions?.map { it.count }?.sum()
+
+        return warehouse.volume - count!!
     }
 }

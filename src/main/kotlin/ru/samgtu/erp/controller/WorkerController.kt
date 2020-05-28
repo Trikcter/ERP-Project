@@ -28,7 +28,7 @@ class WorkerController {
     }
 
     @DeleteMapping
-    fun deleteWorkers(ids: List<Long>) {
+    fun deleteWorkers(@RequestBody ids: List<Long>) {
         userService.delete(ids)
     }
 
