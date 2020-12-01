@@ -9,7 +9,7 @@ import redis.clients.jedis.JedisPoolConfig
  */
 @Service
 class RedisJWTService {
-    private final val jedisPool = JedisPool(JedisPoolConfig(), "localhost")
+    private val jedisPool = JedisPool(JedisPoolConfig(), "\${spring.redis.host}")
 
     fun createValue(token: String, username: String) {
         val jedis = jedisPool.resource
