@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Trikcter/ERP-Project.svg?branch=master)](https://travis-ci.org/Trikcter/ERP-Project)
 # ERP-Project
 It is simple ERP system for small business written by Kotlin. I used Spring Boot and Docker. That system is my exam final task at my course in University
 ## Implementation Information
