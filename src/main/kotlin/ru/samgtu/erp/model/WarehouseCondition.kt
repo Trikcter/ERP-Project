@@ -8,12 +8,12 @@ import javax.persistence.*
 @Entity
 @Table(name = "warehouse_condition")
 data class WarehouseCondition(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
 
-        @Column(name = "count", nullable = false)
-        var count: Long
+    @Column(name = "count", nullable = false)
+    var count: Long
 ) {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")

@@ -34,8 +34,8 @@ class ChartService {
 
         val labels = registry.map { it.title }
         val conditions: List<Long?> = registry
-                .map { it.conditions?.map { condition -> condition.count }?.sum() }
-                .toList()
+            .map { it.conditions?.map { condition -> condition.count }?.sum() }
+            .toList()
 
         return ChartDTO(labels, conditions)
     }

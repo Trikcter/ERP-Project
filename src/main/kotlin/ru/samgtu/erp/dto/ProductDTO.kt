@@ -4,17 +4,17 @@ import java.math.BigDecimal
 import javax.validation.constraints.NotNull
 
 data class ProductDTO(
-        var id: Long,
+    var id: Long,
 
-        @NotNull
-        var title: String,
+    @NotNull
+    var title: String,
 
-        var code: String?,
+    var code: String?,
 
-        @NotNull
-        var price: BigDecimal,
+    @NotNull
+    var price: BigDecimal,
 
-        var organizationId: Long,
+    var organizationId: Long,
 
-        var isDeleted: Boolean
+    var isDeleted: Boolean
 )

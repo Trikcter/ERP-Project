@@ -1,13 +1,13 @@
 package ru.samgtu.erp.dto
 
 data class TypeOfFinancialDTO(
-        var id: Long,
+    var id: Long,
 
-        var description: String?,
+    var description: String?,
 
-        var name: String,
+    var name: String,
 
-        var organizationId: Long,
+    var organizationId: Long,
 
-        var isDeleted: Boolean
+    var isDeleted: Boolean
 )

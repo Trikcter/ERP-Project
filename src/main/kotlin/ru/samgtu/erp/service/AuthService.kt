@@ -59,22 +59,27 @@ class AuthService {
             val user: User = userCandidate.get()
 
             val authentication = authenticationManager.authenticate(
-                    UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password))
+                UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password)
+            )
             SecurityContextHolder.getContext().authentication = authentication
 
             val jwt: String = jwtProvider.generateJwtToken(user.login)
-            val authorities: List<GrantedAuthority> = user.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
+            val authorities: List<GrantedAuthority> =
+                user.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
                     .collect(Collectors.toList<GrantedAuthority>())
 
             redisJWTService.createValue(jwt, user.login)
 
             ResponseEntity.ok(
-                    JwtResponse(jwt,
-                            user.login,
-                            user.organization?.id,
-                            user.organization?.title,
-                            authorities,
-                            StringUtils.getShortFio(user.firstName, user.surname, user.secondName)))
+                JwtResponse(
+                    jwt,
+                    user.login,
+                    user.organization?.id,
+                    user.organization?.title,
+                    authorities,
+                    StringUtils.getShortFio(user.firstName, user.surname, user.secondName)
+                )
+            )
         } else {
             throw ERPException("Такого пользователя нет!")
         }
@@ -95,31 +100,35 @@ class AuthService {
             }
 
             val user = User(
-                    0,
-                    newUser.username,
-                    encoder.encode(newUser.password),
-                    StringUtils.getNameFromFio(newUser.fio),
-                    StringUtils.getSecondNameFromFio(newUser.fio),
-                    StringUtils.getSurnameFromFio(newUser.fio),
-                    false
+                0,
+                newUser.username,
+                encoder.encode(newUser.password),
+                StringUtils.getNameFromFio(newUser.fio),
+                StringUtils.getSecondNameFromFio(newUser.fio),
+                StringUtils.getSurnameFromFio(newUser.fio),
+                false
             )
             user.roles = listOf(roleRepository.findByName("CEO"))
 
             val savedUser = userRepository.save(user)
 
             val jwt: String = jwtProvider.generateJwtToken(savedUser.login)
-            val authorities: List<GrantedAuthority> = savedUser.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
+            val authorities: List<GrantedAuthority> =
+                savedUser.roles!!.stream().map { role -> SimpleGrantedAuthority(role.name) }
                     .collect(Collectors.toList<GrantedAuthority>())
 
             redisJWTService.createValue(jwt, user.login)
 
             return ResponseEntity.ok(
-                    JwtResponse(jwt,
-                            user.login,
-                            user.organization?.id,
-                            user.organization?.title,
-                            authorities,
-                            StringUtils.getShortFio(user.firstName, user.surname, user.secondName)))
+                JwtResponse(
+                    jwt,
+                    user.login,
+                    user.organization?.id,
+                    user.organization?.title,
+                    authorities,
+                    StringUtils.getShortFio(user.firstName, user.surname, user.secondName)
+                )
+            )
         } else {
             throw ERPException("Такой пользователь уже существует!")
         }
@@ -137,7 +146,7 @@ class AuthService {
 
     fun getAllRoles(): List<Role> {
         return roleRepository.findAll()
-                .filter { it.id != 1L }
-                .toList()
+            .filter { it.id != 1L }
+            .toList()
     }
 }

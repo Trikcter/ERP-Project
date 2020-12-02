@@ -11,19 +11,21 @@ import ru.samgtu.erp.utils.StringUtils
 class UserMapper : CrudMapper<UserDTO, User> {
     override fun dto2model(dto: UserDTO): User {
         val user = User(
-                dto.id,
-                dto.login,
-                dto.password,
-                StringUtils.getNameFromFio(dto.fio),
-                StringUtils.getSecondNameFromFio(dto.fio),
-                StringUtils.getSurnameFromFio(dto.fio)
+            dto.id,
+            dto.login,
+            dto.password,
+            StringUtils.getNameFromFio(dto.fio),
+            StringUtils.getSecondNameFromFio(dto.fio),
+            StringUtils.getSurnameFromFio(dto.fio)
         )
 
-        user.roles = listOf(Role(
+        user.roles = listOf(
+            Role(
                 0,
                 dto.role.name,
                 dto.role.description
-        ))
+            )
+        )
 
         return user
     }
@@ -32,18 +34,20 @@ class UserMapper : CrudMapper<UserDTO, User> {
         val role = ArrayList(model.roles!!)[0]
 
         return UserDTO(
-                model.id,
-                model.login,
-                model.password,
-                String.format("%s %s %s",
-                        model.firstName,
-                        model.secondName,
-                        model.surname),
-                RoleDTO(
-                        role.name,
-                        role.description
-                ),
-                model.isDeleted
+            model.id,
+            model.login,
+            model.password,
+            String.format(
+                "%s %s %s",
+                model.firstName,
+                model.secondName,
+                model.surname
+            ),
+            RoleDTO(
+                role.name,
+                role.description
+            ),
+            model.isDeleted
         )
     }
 }

@@ -11,19 +11,19 @@ import java.time.LocalDateTime
 class BankOperationMapper {
     fun model2DTO(model: BankOperation): BankHistory {
         return BankHistory(
-                model.sum,
-                model.comment,
-                model.dateOfOperation,
-                model.typeOfFinancialOperation.name
+            model.sum,
+            model.comment,
+            model.dateOfOperation,
+            model.typeOfFinancialOperation.name
         )
     }
 
     fun dto2model(dto: BankOperationDTO): BankOperation {
         val operation = BankOperation(
-                0,
-                dto.sum,
-                dto.comment,
-                LocalDateTime.now()
+            0,
+            dto.sum,
+            dto.comment,
+            LocalDateTime.now()
         )
 
         operation.typeOfFinancialOperation = TypeOfFinancialOperation(dto.typeId)

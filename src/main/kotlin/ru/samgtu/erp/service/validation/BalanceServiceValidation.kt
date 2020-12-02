@@ -1,4 +1,4 @@
-package ru.samgtu.erp.service
+package ru.samgtu.erp.service.validation
 
 import org.springframework.stereotype.Service
 import ru.samgtu.erp.exception.ERPException

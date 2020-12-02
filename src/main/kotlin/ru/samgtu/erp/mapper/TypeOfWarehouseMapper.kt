@@ -9,21 +9,21 @@ import ru.samgtu.erp.model.TypeOfWarehouseOperation
 class TypeOfWarehouseMapper : CrudMapper<TypeOfWarehouseDTO, TypeOfWarehouseOperation> {
     override fun dto2model(dto: TypeOfWarehouseDTO): TypeOfWarehouseOperation {
         return TypeOfWarehouseOperation(
-                dto.id,
-                dto.description,
-                dto.name,
-                dto.isDeleted,
-                Organization(dto.organizationId)
+            dto.id,
+            dto.description,
+            dto.name,
+            dto.isDeleted,
+            Organization(dto.organizationId)
         )
     }
 
     override fun model2dto(model: TypeOfWarehouseOperation): TypeOfWarehouseDTO {
         return TypeOfWarehouseDTO(
-                model.id,
-                model.description,
-                model.name,
-                model.organization.id,
-                model.isDeleted
+            model.id,
+            model.description,
+            model.name,
+            model.organization.id,
+            model.isDeleted
         )
     }
 }

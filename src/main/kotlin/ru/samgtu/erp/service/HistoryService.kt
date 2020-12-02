@@ -41,15 +41,19 @@ class HistoryService {
         }
     }
 
-    fun getAllOrderHistory(@RequestParam organizationId: Long,
-                           pageable: Pageable): Page<Order> {
+    fun getAllOrderHistory(
+        @RequestParam organizationId: Long,
+        pageable: Pageable
+    ): Page<Order> {
         organizationService.getById(organizationId)
 
         return orderRepository.findAllByOrganizationId(organizationId, pageable)
     }
 
-    fun getAllBankHistory(@RequestParam organizationId: Long,
-                          pageable: Pageable): Page<BankOperation> {
+    fun getAllBankHistory(
+        @RequestParam organizationId: Long,
+        pageable: Pageable
+    ): Page<BankOperation> {
         organizationService.getById(organizationId)
 
         return bankOperationRepository.findAllByOrganizationId(organizationId, pageable)

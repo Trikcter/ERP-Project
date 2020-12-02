@@ -31,20 +31,20 @@ abstract class CrudController<X, T : AbstractEntity> {
     @GetMapping
     fun getAllEntities(page: Pageable): Page<X> {
         return getService().getAll(page)
-                .map { entity -> getMapper().model2dto(entity) }
+            .map { entity -> getMapper().model2dto(entity) }
     }
 
     @PostMapping
     fun addEntity(@RequestBody dto: X): X {
         return getMapper().model2dto(
-                getService().save(getMapper().dto2model(dto))
+            getService().save(getMapper().dto2model(dto))
         )
     }
 
     @PutMapping
     fun editEntity(@RequestBody dto: X): X {
         return getMapper().model2dto(
-                getService().save(getMapper().dto2model(dto))
+            getService().save(getMapper().dto2model(dto))
         )
     }
 

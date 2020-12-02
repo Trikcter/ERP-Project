@@ -31,22 +31,28 @@ class HistoryController {
     private lateinit var bankOperationMapper: BankOperationMapper
 
     @GetMapping("/warehouses")
-    fun getWarehousesHistory(@RequestParam organizationId: Long,
-                             @RequestParam warehouseId: Long?,
-                             pageable: Pageable): Page<WarehousesHistoryDTO> {
+    fun getWarehousesHistory(
+        @RequestParam organizationId: Long,
+        @RequestParam warehouseId: Long?,
+        pageable: Pageable
+    ): Page<WarehousesHistoryDTO> {
         return historyService.getAllWarehouseHistory(organizationId, warehouseId, pageable)
-                .map { warehouseOperationMapper.model2DTO(it) }
+            .map { warehouseOperationMapper.model2DTO(it) }
     }
 
     @GetMapping("/banks")
-    fun getBankHistory(@RequestParam organizationId: Long,
-                       pageable: Pageable): Page<BankHistory> {
+    fun getBankHistory(
+        @RequestParam organizationId: Long,
+        pageable: Pageable
+    ): Page<BankHistory> {
         return historyService.getAllBankHistory(organizationId, pageable).map { bankOperationMapper.model2DTO(it) }
     }
 
     @GetMapping("/orders")
-    fun getOrderHistory(@RequestParam organizationId: Long,
-                        pageable: Pageable): Page<OrderHistory> {
+    fun getOrderHistory(
+        @RequestParam organizationId: Long,
+        pageable: Pageable
+    ): Page<OrderHistory> {
         return historyService.getAllOrderHistory(organizationId, pageable).map { orderOperationMapper.model2DTO(it) }
     }
 }

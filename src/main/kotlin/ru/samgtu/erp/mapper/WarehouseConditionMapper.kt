@@ -14,8 +14,8 @@ class WarehouseConditionMapper {
 
     fun dto2model(dto: WarehouseConditionDTO): WarehouseCondition {
         val model = WarehouseCondition(
-                dto.id,
-                dto.count
+            dto.id,
+            dto.count
         )
 
         model.product = Product(dto.product.id)
@@ -26,10 +26,10 @@ class WarehouseConditionMapper {
 
     fun model2dto(model: WarehouseCondition): WarehouseConditionDTO {
         return WarehouseConditionDTO(
-                model.id,
-                model.count,
-                productMapper.model2dto(model.product),
-                model.warehouse.id
+            model.id,
+            model.count,
+            productMapper.model2dto(model.product),
+            model.warehouse.id
         )
     }
 }

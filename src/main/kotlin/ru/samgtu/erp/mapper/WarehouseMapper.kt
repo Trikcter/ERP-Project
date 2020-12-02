@@ -10,10 +10,10 @@ import ru.samgtu.erp.model.Warehouse
 class WarehouseMapper : CrudMapper<WarehouseDTO, Warehouse> {
     override fun dto2model(dto: WarehouseDTO): Warehouse {
         val warehouse = Warehouse(
-                dto.id,
-                dto.title,
-                dto.volume,
-                dto.isDeleted
+            dto.id,
+            dto.title,
+            dto.volume,
+            dto.isDeleted
         )
 
         warehouse.address = Address(dto.addressTitle)
@@ -24,12 +24,12 @@ class WarehouseMapper : CrudMapper<WarehouseDTO, Warehouse> {
 
     override fun model2dto(model: Warehouse): WarehouseDTO {
         val dto = WarehouseDTO(
-                model.id,
-                model.title,
-                model.organization.id,
-                model.address.title,
-                model.volume,
-                model.isDeleted
+            model.id,
+            model.title,
+            model.organization.id,
+            model.address.title,
+            model.volume,
+            model.isDeleted
         )
 
         dto.congestion = model.congestion

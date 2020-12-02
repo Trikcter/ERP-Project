@@ -8,11 +8,11 @@ import ru.samgtu.erp.model.WarehouseOperation
 class WarehouseOperationMapper {
     fun model2DTO(model: WarehouseOperation): WarehousesHistoryDTO {
         return WarehousesHistoryDTO(
-                model.count,
-                model.dateOfOperation,
-                model.warehouse.title,
-                model.product.title,
-                model.typeOfWarehouseOperation.name
+            model.count,
+            model.dateOfOperation,
+            model.warehouse.title,
+            model.product.title,
+            model.typeOfWarehouseOperation.name
         )
     }
 }

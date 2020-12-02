@@ -9,21 +9,21 @@ import ru.samgtu.erp.model.TypeOfFinancialOperation
 class TypeOfFinancialMapper : CrudMapper<TypeOfFinancialDTO, TypeOfFinancialOperation> {
     override fun dto2model(dto: TypeOfFinancialDTO): TypeOfFinancialOperation {
         return TypeOfFinancialOperation(
-                dto.id,
-                dto.description,
-                dto.name,
-                dto.isDeleted,
-                Organization(dto.organizationId)
+            dto.id,
+            dto.description,
+            dto.name,
+            dto.isDeleted,
+            Organization(dto.organizationId)
         )
     }
 
     override fun model2dto(model: TypeOfFinancialOperation): TypeOfFinancialDTO {
         return TypeOfFinancialDTO(
-                model.id,
-                model.description,
-                model.name,
-                model.organization.id,
-                model.isDeleted
+            model.id,
+            model.description,
+            model.name,
+            model.organization.id,
+            model.isDeleted
         )
     }
 }

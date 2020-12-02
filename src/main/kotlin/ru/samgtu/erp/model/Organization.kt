@@ -5,24 +5,24 @@ import javax.persistence.*
 @Entity
 @Table(name = "organization")
 data class Organization(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        override var id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override var id: Long = 0,
 
-        @Column(name = "inn", nullable = false)
-        var inn: String,
+    @Column(name = "inn", nullable = false)
+    var inn: String,
 
-        @Column(name = "kpp", nullable = false)
-        var kpp: String,
+    @Column(name = "kpp", nullable = false)
+    var kpp: String,
 
-        @Column(name = "ogrn", nullable = false)
-        var ogrn: String,
+    @Column(name = "ogrn", nullable = false)
+    var ogrn: String,
 
-        @Column(name = "title", nullable = false)
-        var title: String,
+    @Column(name = "title", nullable = false)
+    var title: String,
 
-        @Column(name = "is_deleted", nullable = false)
-        override var isDeleted: Boolean
+    @Column(name = "is_deleted", nullable = false)
+    override var isDeleted: Boolean
 ) : AbstractEntity {
     constructor(id: Long) : this(id, "", "", "", "", false)
 

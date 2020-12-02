@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.samgtu.erp.model.Order
 import ru.samgtu.erp.repository.OrderRepository
+import ru.samgtu.erp.service.validation.WarehouseValidService
 import java.time.LocalDateTime
 
 @Service

@@ -60,6 +60,6 @@ class UserService : CrudService<User>() {
         val username = SecurityUtils.getUserName()
 
         return userRepository.findByLogin(username)
-                .orElseThrow { throw EntityNotFoundException() }
+            .orElseThrow { throw EntityNotFoundException() }
     }
 }

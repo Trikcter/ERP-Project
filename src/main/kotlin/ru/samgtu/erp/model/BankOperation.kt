@@ -7,18 +7,18 @@ import javax.persistence.*
 @Entity
 @Table(name = "bank_operation")
 data class BankOperation(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
 
-        @Column(name = "sum", nullable = false)
-        var sum: BigDecimal,
+    @Column(name = "sum", nullable = false)
+    var sum: BigDecimal,
 
-        @Column(name = "comment")
-        var comment: String?,
+    @Column(name = "comment")
+    var comment: String?,
 
-        @Column(name = "date_of_operation", nullable = false)
-        var dateOfOperation: LocalDateTime
+    @Column(name = "date_of_operation", nullable = false)
+    var dateOfOperation: LocalDateTime
 ) {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id", nullable = false, referencedColumnName = "id")

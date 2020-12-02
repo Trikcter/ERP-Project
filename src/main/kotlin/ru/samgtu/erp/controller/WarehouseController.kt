@@ -30,30 +30,33 @@ class WarehouseController : CrudController<WarehouseDTO, Warehouse>() {
     @GetMapping("/all")
     fun getAll(@RequestParam organizationId: Long, pageable: Pageable): Page<WarehouseDTO> {
         return warehouseService.getAllById(organizationId, pageable)
-                .map { entity -> warehouseMapper.model2dto(entity) }
+            .map { entity -> warehouseMapper.model2dto(entity) }
     }
 
     @GetMapping("/all/active")
     fun getAllActive(@RequestParam organizationId: Long, pageable: Pageable): Page<WarehouseDTO> {
         return warehouseService.getAllActiveById(organizationId, pageable)
-                .map { entity -> warehouseMapper.model2dto(entity) }
+            .map { entity -> warehouseMapper.model2dto(entity) }
     }
 
     @GetMapping("/{id}/conditions")
     fun getAllConditions(@PathVariable id: Long, pageable: Pageable): Page<WarehouseConditionDTO> {
         return warehouseService.getConditionsById(id, pageable)
-                .map { warehouseConditionMapper.model2dto(it) }
+            .map { warehouseConditionMapper.model2dto(it) }
     }
 
     @PostMapping("/conditions")
-    fun getConditionForWarehouse(@RequestBody condition: WarehouseConditionDTO,
-                                 @RequestParam @NotNull typeOperation: Long,
-                                 @RequestParam warehouseId: Long?): ResponseEntity<*> {
+    fun getConditionForWarehouse(
+        @RequestBody condition: WarehouseConditionDTO,
+        @RequestParam @NotNull typeOperation: Long,
+        @RequestParam warehouseId: Long?
+    ): ResponseEntity<*> {
         return warehouseService
-                .saveCondition(
-                        warehouseConditionMapper.dto2model(condition),
-                        typeOperation,
-                        warehouseId)
+            .saveCondition(
+                warehouseConditionMapper.dto2model(condition),
+                typeOperation,
+                warehouseId
+            )
     }
 
     @PostMapping("/all")

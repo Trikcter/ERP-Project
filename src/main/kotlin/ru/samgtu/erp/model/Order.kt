@@ -6,15 +6,15 @@ import javax.persistence.*
 @Entity
 @Table(name = "orders")
 data class Order(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
 
-        @Column(name = "count")
-        var count: Long,
+    @Column(name = "count")
+    var count: Long,
 
-        @Column(name = "date_of_operation", nullable = false)
-        var dateOfOperation: LocalDateTime
+    @Column(name = "date_of_operation", nullable = false)
+    var dateOfOperation: LocalDateTime
 ) {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Balance::class)
     @JoinColumn(name = "balance_id")

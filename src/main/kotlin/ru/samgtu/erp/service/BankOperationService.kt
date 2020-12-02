@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.samgtu.erp.model.BankOperation
 import ru.samgtu.erp.repository.BankOperationRepository
+import ru.samgtu.erp.service.validation.BalanceServiceValidation
 import java.time.LocalDateTime
 
 @Service

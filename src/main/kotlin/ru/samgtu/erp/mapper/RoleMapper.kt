@@ -8,8 +8,8 @@ import ru.samgtu.erp.model.Role
 class RoleMapper {
     fun model2DTO(model: Role): RoleDTO {
         return RoleDTO(
-                model.name,
-                model.description
+            model.name,
+            model.description
         )
     }
 }

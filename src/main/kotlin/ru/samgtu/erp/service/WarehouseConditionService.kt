@@ -23,7 +23,7 @@ class WarehouseConditionService {
      */
     fun createCondition(count: Long, product: Product, warehouse: Warehouse, typeOperation: TypeOfWarehouseOperation) {
         val condition = warehouseConditionRepository.findFirstByProductAndWarehouse(product, warehouse)
-                .orElse(WarehouseCondition(0, 0))
+            .orElse(WarehouseCondition(0, 0))
 
         condition.count += count
 
@@ -39,12 +39,12 @@ class WarehouseConditionService {
         }
 
         val operation = WarehouseOperation(
-                0,
-                count,
-                LocalDateTime.now(),
-                typeOperation,
-                warehouse,
-                product
+            0,
+            count,
+            LocalDateTime.now(),
+            typeOperation,
+            warehouse,
+            product
         )
 
         warehouseOperationRepository.save(operation)

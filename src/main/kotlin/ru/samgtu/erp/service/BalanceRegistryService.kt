@@ -16,10 +16,10 @@ class BalanceRegistryService {
     @Transactional
     fun createBalanceRegistry(balance: Balance) {
         val balanceRegistry = BalanceRegistry(
-                0,
-                balance.allBalance,
-                LocalDateTime.now(),
-                balance
+            0,
+            balance.allBalance,
+            LocalDateTime.now(),
+            balance
         )
 
         balanceRegistryRepository.save(balanceRegistry)

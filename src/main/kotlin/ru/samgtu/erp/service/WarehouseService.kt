@@ -13,6 +13,7 @@ import ru.samgtu.erp.model.WarehouseCondition
 import ru.samgtu.erp.repository.AddressRepository
 import ru.samgtu.erp.repository.WarehouseConditionRepository
 import ru.samgtu.erp.repository.WarehouseRepository
+import ru.samgtu.erp.service.validation.WarehouseValidService
 
 @Service
 class WarehouseService : CrudService<Warehouse>() {
@@ -48,9 +49,11 @@ class WarehouseService : CrudService<Warehouse>() {
      * @param warehouseId - ID второго склада, участвующего в операции
      */
     @Transactional
-    fun saveCondition(warehouseCondition: WarehouseCondition,
-                      typeOperationId: Long,
-                      warehouseId: Long?): ResponseEntity<*> {
+    fun saveCondition(
+        warehouseCondition: WarehouseCondition,
+        typeOperationId: Long,
+        warehouseId: Long?
+    ): ResponseEntity<*> {
         val product = productService.getById(warehouseCondition.product.id)
         val typeOperation = typeOfWarehouseOperationService.getById(typeOperationId)
         val currentWarehouse = this.getById(warehouseCondition.warehouse.id)
@@ -74,8 +77,8 @@ class WarehouseService : CrudService<Warehouse>() {
     @Transactional
     override fun save(entity: Warehouse): Warehouse {
         var address = addressRepository
-                .findByTitle(entity.address.title)
-                .orElseGet { Address(entity.address.title) }
+            .findByTitle(entity.address.title)
+            .orElseGet { Address(entity.address.title) }
 
         if (address.id == 0L) {
             address = addressRepository.save(entity.address)
@@ -154,8 +157,8 @@ class WarehouseService : CrudService<Warehouse>() {
      */
     private fun getCongestion(volume: Long, conditions: List<WarehouseCondition>): Double {
         val count = conditions
-                .map { it.count }
-                .sum()
+            .map { it.count }
+            .sum()
 
         return (count.toDouble() / volume.toDouble()) * 100
     }

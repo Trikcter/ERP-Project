@@ -14,9 +14,9 @@ class ExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     fun handleApplicationException(request: HttpServletRequest, exception: ERPException): ErrorDTO {
         return ErrorDTO(
-                exception.localizedMessage,
-                request.requestURI,
-                HttpStatus.BAD_REQUEST.toString()
+            exception.localizedMessage,
+            request.requestURI,
+            HttpStatus.BAD_REQUEST.toString()
         )
     }
 }

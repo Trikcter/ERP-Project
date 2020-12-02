@@ -11,17 +11,17 @@ import java.time.LocalDateTime
 class OrderOperationMapper {
     fun model2DTO(model: Order): OrderHistory {
         return OrderHistory(
-                model.count,
-                model.product.title,
-                model.dateOfOperation
+            model.count,
+            model.product.title,
+            model.dateOfOperation
         )
     }
 
     fun dto2model(dto: OrderDTO): Order {
         val order = Order(
-                0,
-                dto.count,
-                LocalDateTime.now()
+            0,
+            dto.count,
+            LocalDateTime.now()
         )
 
         order.product = Product(dto.productId)

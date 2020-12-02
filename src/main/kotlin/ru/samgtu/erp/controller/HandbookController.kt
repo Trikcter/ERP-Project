@@ -18,6 +18,6 @@ abstract class HandbookController<X, T : TypeOfOperation> : CrudController<X, T>
     @GetMapping("/all/active")
     fun getAllActiveByOrganization(@RequestParam organizationId: Long, pageable: Pageable): Page<X> {
         return getService().getAllActiveById(organizationId, pageable)
-                .map { entity -> getMapper().model2dto(entity) }
+            .map { entity -> getMapper().model2dto(entity) }
     }
 }

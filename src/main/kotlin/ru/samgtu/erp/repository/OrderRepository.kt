@@ -10,9 +10,11 @@ import ru.samgtu.erp.model.Order
 
 @Repository
 interface OrderRepository : JpaRepository<Order, Long> {
-    @Query(value = "SELECT ord FROM Order ord " +
-            "INNER JOIN ord.balance balance " +
-            "INNER JOIN balance.organization organization " +
-            "WHERE organization.id = :id")
+    @Query(
+        value = "SELECT ord FROM Order ord " +
+                "INNER JOIN ord.balance balance " +
+                "INNER JOIN balance.organization organization " +
+                "WHERE organization.id = :id"
+    )
     fun findAllByOrganizationId(@Param("id") organizationId: Long, pageable: Pageable): Page<Order>
 }

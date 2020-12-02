@@ -6,12 +6,12 @@ import javax.persistence.*
 @Entity
 @Table(name = "balance")
 data class Balance(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
 
-        @Column(name = "all_balance", nullable = false)
-        var allBalance: BigDecimal
+    @Column(name = "all_balance", nullable = false)
+    var allBalance: BigDecimal
 ) {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "balance")
     var orderOperations: Collection<Order>? = null

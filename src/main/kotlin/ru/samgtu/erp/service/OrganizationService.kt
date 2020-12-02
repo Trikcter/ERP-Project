@@ -38,8 +38,8 @@ class OrganizationService : CrudService<Organization>() {
     @Transactional
     override fun save(entity: Organization): Organization {
         var address = addressRepository
-                .findByTitle(entity.address.title)
-                .orElseGet { Address(entity.address.title) }
+            .findByTitle(entity.address.title)
+            .orElseGet { Address(entity.address.title) }
 
         if (address.id == 0L) {
             address = addressRepository.save(entity.address)
@@ -87,8 +87,8 @@ class OrganizationService : CrudService<Organization>() {
 
     fun getFileById(id: Long, response: HttpServletResponse) {
         val organization = organizationRepository
-                .findById(id)
-                .orElseThrow { throw EntityNotFoundException() }
+            .findById(id)
+            .orElseThrow { throw EntityNotFoundException() }
 
         val filePath = Paths.get(organization.url)
         val bytes = Files.readAllBytes(filePath)

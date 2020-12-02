@@ -7,17 +7,17 @@ import javax.persistence.*
 @Entity
 @Table(name = "balance_registry")
 data class BalanceRegistry(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
 
-        @Column(name = "value")
-        val value: BigDecimal,
+    @Column(name = "value")
+    val value: BigDecimal,
 
-        @Column(name = "date")
-        val date: LocalDateTime,
+    @Column(name = "date")
+    val date: LocalDateTime,
 
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "balance_id", referencedColumnName = "id")
-        var balance: Balance
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "balance_id", referencedColumnName = "id")
+    var balance: Balance
 )
