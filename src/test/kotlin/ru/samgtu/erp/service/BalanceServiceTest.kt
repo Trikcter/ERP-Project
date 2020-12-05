@@ -24,11 +24,11 @@ internal class BalanceServiceTest {
     @InjectMocks
     lateinit var balanceService: BalanceService
 
+    private val organization = Organization(0, "", "", "", "", false)
+    private val defaultBalance = Balance(0, BigDecimal.ZERO, organization)
+
     @Test
     fun createBalance() {
-        val organization = Organization(0, "", "", "", "", false)
-        val defaultBalance = Balance(0, BigDecimal.ZERO, organization)
-
         Mockito
             .`when`(balanceRepository.save(Mockito.any<Balance>()))
             .thenReturn(defaultBalance)
@@ -42,10 +42,23 @@ internal class BalanceServiceTest {
             .save(Mockito.any<Balance>())
         Mockito
             .verify(balanceRegistryService, Mockito.times(1))
-            .createBalanceRegistry(Mockito.any<Balance>())
+            .createBalanceRegistry(defaultBalance)
     }
 
     @Test
     fun editBalance() {
+        Mockito
+            .`when`(balanceRepository.save(Mockito.any<Balance>()))
+            .thenReturn(defaultBalance)
+
+        val balance = balanceService.editBalance(defaultBalance, BigDecimal.TEN)
+        assertTrue(balance.allBalance == BigDecimal.TEN)
+
+        Mockito
+            .verify(balanceRepository, Mockito.times(1))
+            .save(Mockito.any<Balance>())
+        Mockito
+            .verify(balanceRegistryService, Mockito.times(1))
+            .createBalanceRegistry(balance)
     }
 }
